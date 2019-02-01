@@ -8,56 +8,56 @@ import javax.persistence.Id;
 @Entity
 public class Client {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private long id;
 
-	private String name;
+  private String name;
 
-	private String birthday;
+  private String birthday;
 
-	private String address;
-	
-	private float balance;
+  private String address;
 
-	public float getBalance() {
-		return balance;
-	}
+  private float balance;
 
-	public void setBalance(float balance) {
-		this.balance = balance;
-	}
+  public float getBalance() {
+    return balance;
+  }
 
-	public long getId() {
-		return id;
-	}
+  public void setBalance(float balance) {
+    this.balance = balance;
+  }
 
-	public void setId(long id) {
-		this.id = id;
-	}
+  public long getId() {
+    return id;
+  }
 
-	public String getName() {
-		return name;
-	}
+  public void setId(long id) {
+    this.id = id;
+  }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+  public String getName() {
+    return name;
+  }
 
-	public String getBirthday() {
-		return birthday;
-	}
+  public void setName(String name) {
+    this.name = name;
+  }
 
-	public void setBirthday(String birthday) {
-		this.birthday = birthday;
-	}
+  public String getBirthday() {
+    return birthday;
+  }
 
-	public String getAddress() {
-		return address;
-	}
+  public void setBirthday(String birthday) {
+    this.birthday = birthday;
+  }
 
-	public void setAddress(String address) {
-		this.address = address;
-	}
-	
+  public String getAddress() {
+    return address;
+  }
+
+  public void setAddress(String address) {
+    this.address = address;
+  }
+
 }
