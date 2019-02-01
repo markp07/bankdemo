@@ -16,7 +16,17 @@ public class Client {
 
 	private String birthday;
 
-	private String address;	
+	private String address;
+	
+	private float balance;
+
+	public float getBalance() {
+		return balance;
+	}
+
+	public void setBalance(float balance) {
+		this.balance = balance;
+	}
 
 	public long getId() {
 		return id;
