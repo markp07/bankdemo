@@ -24,14 +24,14 @@ public class ClientController {
   @Produces(MediaType.APPLICATION_JSON)
   public Response listClients(@PathParam("id") long id,
       @PathParam("transfer") float transfer) {
-    Client client = clientService.findById(id).get();
-    float balance = client.getBalance();
-
-    if (transfer > 0) {
-      balance = balance - transfer;
-      client.setBalance(balance);
-      clientService.save(client);
-    }
+//    Client client = clientService.findById(id).get();
+//    float balance = client.getBalance();
+//
+//    if (transfer > 0) {
+//      balance = balance - transfer;
+//      client.setBalance(balance);
+//      clientService.save(client);
+//    }
 
     Iterable<Client> clients = clientService.findAll();
     return Response.ok(clients).build();

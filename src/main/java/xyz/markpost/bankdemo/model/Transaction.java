@@ -1,21 +1,22 @@
 package xyz.markpost.bankdemo.model;
 
 import java.sql.Date;
-import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Client entity
+ * Transaction entity
  */
 @Entity
-public class Client {
+public class Transaction {
 
   @Getter
   @Setter
@@ -26,37 +27,34 @@ public class Client {
 
   @Getter
   @Setter
-  @Column(name = "firstname")
-  private String firstName;
+  @ManyToOne
+  @JoinColumn(name = "account_id")
+  private Account account;
 
   @Getter
   @Setter
-  @Column(name = "lastname")
-  private String lastName;
+  @ManyToOne
+  @JoinColumn(name = "contra_account_id")
+  private Account contraAccount;
 
   @Getter
   @Setter
-  @Column(name = "birthdate")
-  private Date birthDate;
+  @Column(name = "type")
+  private TransactionType type;
 
   @Getter
   @Setter
-  @Column(name = "address")
-  private String address;
+  @Column(name = "date")
+  private Date date;
 
   @Getter
   @Setter
-  @OneToMany(mappedBy = "client")
-  private List<Account> clients;
+  @Column(name = "balance")
+  private float balance;
 
   @Getter
   @Setter
-  @OneToMany(mappedBy = "account")
-  private List<Transaction> transactions;
-
-  @Getter
-  @Setter
-  @OneToMany(mappedBy = "contraAccount")
-  private List<Transaction> contraTransactions;
+  @Column(name = "description")
+  private String description;
 
 }
