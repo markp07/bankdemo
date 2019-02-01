@@ -22,14 +22,14 @@ public class ClientController {
 	@Autowired
 	private ClientService clientService;
 
-	@GET
+    @GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response listGroep(){
 		Iterable <Client> treinen = clientService.findAll();
 		return Response.ok(treinen).build();
 	}
 	
-	@POST
+    @POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response postTrein(Client client){
