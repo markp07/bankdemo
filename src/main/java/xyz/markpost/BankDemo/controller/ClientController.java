@@ -29,4 +29,12 @@ public class ClientController {
 		return Response.ok(treinen).build();
 	}
 	
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.TEXT_PLAIN)
+	public Response postTrein(Client client){
+		Client result = clientService.save(client);
+		return Response.accepted(result.getId()).build();	
+	}
+	
 }
