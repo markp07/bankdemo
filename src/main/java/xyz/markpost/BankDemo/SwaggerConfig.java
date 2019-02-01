@@ -1,4 +1,4 @@
-package xyz.markpost.traininformation;
+package xyz.markpost.BankDemo;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
