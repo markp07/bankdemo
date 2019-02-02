@@ -59,4 +59,8 @@ public class Client {
   @OneToMany(mappedBy = "contraAccount")
   private List<Transaction> contraTransactions;
 
+  public String getFullName(){
+    return firstName + " " + lastName;
+  }
+
 }

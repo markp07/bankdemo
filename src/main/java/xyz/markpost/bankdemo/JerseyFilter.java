@@ -10,9 +10,13 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
 
+/**
+ *
+ */
 @Component
 public class JerseyFilter implements Filter {
 
+  @Override
   public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
       throws IOException, ServletException {
     HttpServletResponse response = (HttpServletResponse) res;
@@ -23,9 +27,11 @@ public class JerseyFilter implements Filter {
     chain.doFilter(req, res);
   }
 
+  @Override
   public void init(FilterConfig filterConfig) {
   }
 
+  @Override
   public void destroy() {
   }
 

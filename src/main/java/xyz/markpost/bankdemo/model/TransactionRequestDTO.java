@@ -12,48 +12,34 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Transaction entity
+ * TransactionRequestDTO
+ *
+ * TODO: add account number? Maybe instead of id?
  */
-@Entity
-public class Transaction {
+public class TransactionRequestDTO {
 
   @Getter
   @Setter
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  @Column(name = "id")
-  private long id;
+  private long accountId;
 
   @Getter
   @Setter
-  @ManyToOne
-  @JoinColumn(name = "account_id")
-  private Account account;
+  private long contraAccountId;
 
   @Getter
   @Setter
-  @ManyToOne
-  @JoinColumn(name = "contra_account_id")
-  private Account contraAccount;
-
-  @Getter
-  @Setter
-  @Column(name = "type")
   private TransactionType type;
 
   @Getter
   @Setter
-  @Column(name = "date")
   private Date date;
 
   @Getter
   @Setter
-  @Column(name = "amount")
   private float amount;
 
   @Getter
   @Setter
-  @Column(name = "description")
   private String description;
 
 }

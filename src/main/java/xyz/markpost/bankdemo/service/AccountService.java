@@ -76,7 +76,7 @@ public class AccountService {
   public List<AccountResponseDTO> findByClientId(Long clientId) {
     Client client = findSingleClient(clientId);
 
-    if(null != client) {
+    if (null != client) {
       List<Account> accounts = client.getAccounts();
 
       ArrayList<AccountResponseDTO> accountResponseDTOS = new ArrayList<>();
@@ -189,7 +189,7 @@ public class AccountService {
 
     accountResponseDTO.setId(account.getId());
     accountResponseDTO.setClientId(client.getId());
-    accountResponseDTO.setName(client.getFirstName(), client.getLastName());
+    accountResponseDTO.setName(client);
     accountResponseDTO.setNumber(account.getNumber());
     accountResponseDTO.setType(account.getType());
 

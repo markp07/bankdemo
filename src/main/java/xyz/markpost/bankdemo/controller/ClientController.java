@@ -46,7 +46,8 @@ public class ClientController {
    * @return
    */
   @GetMapping(path = "{id}", produces = "application/json")
-  public List<ClientResponseDTO> retrieveClient(@PathVariable(value = "id", required = false) Long id) {
+  public List<ClientResponseDTO> retrieveClient(
+      @PathVariable(value = "id", required = false) Long id) {
     if (null != id) {
       return clientService.findById(id);
     } else {
@@ -60,7 +61,7 @@ public class ClientController {
    * @return
    */
   @GetMapping(path = "{id}/accounts", produces = "application/json")
-  public List<AccountResponseDTO> retrieveClientAccounts( @PathVariable(value = "id") Long id) {
+  public List<AccountResponseDTO> retrieveClientAccounts(@PathVariable(value = "id") Long id) {
     return accountService.findByClientId(id);
   }
 
