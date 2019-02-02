@@ -78,7 +78,7 @@ public class ClientService {
    * @param clientRequestDTO
    * @return
    */
-  public Client update(Long id, ClientRequestDTO clientRequestDTO) {
+  public ClientResponseDTO update(Long id, ClientRequestDTO clientRequestDTO) {
     Client client = findSingleClient(id);
 
     if (null != client) {
@@ -107,7 +107,7 @@ public class ClientService {
       throw new EntityNotFoundException("Client with id " + id.toString() + " not found.");
     }
 
-    return client;
+    return createResponseClient(client);
   }
 
   /**

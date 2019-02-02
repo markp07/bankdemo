@@ -12,32 +12,27 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import xyz.markpost.bankdemo.model.AccountRequestDTO;
 import xyz.markpost.bankdemo.model.AccountResponseDTO;
-import xyz.markpost.bankdemo.model.ClientRequestDTO;
-import xyz.markpost.bankdemo.model.ClientResponseDTO;
 import xyz.markpost.bankdemo.service.AccountService;
-import xyz.markpost.bankdemo.service.ClientService;
 
 
 @RestController
-@RequestMapping("v1/clients")
-public class ClientController {
-
-  @Autowired
-  private ClientService clientService;
+@RequestMapping("v1/accounts")
+public class AccountController {
 
   @Autowired
   private AccountService accountService;
 
   /**
    *
-   * @param clientRequestDTO
+   * @param accountRequestDTO
    * @return
    */
   @PostMapping(produces = "application/json")
   @ResponseStatus(HttpStatus.CREATED)
-  public ClientResponseDTO createClient(@RequestBody ClientRequestDTO clientRequestDTO) {
-    return clientService.create(clientRequestDTO);
+  public AccountResponseDTO createAccount(@RequestBody AccountRequestDTO accountRequestDTO) {
+    return accountService.create(accountRequestDTO);
   }
 
   /**
@@ -45,36 +40,27 @@ public class ClientController {
    * @param id
    * @return
    */
-  @GetMapping(path = "{id}", produces = "application/json")
-  public List<ClientResponseDTO> retrieveClient(@PathVariable(value = "id", required = false) Long id) {
+  @GetMapping(path = "id", produces = "application/json")
+  public List<AccountResponseDTO> retrieveAccount(
+      @PathVariable(value = "id", required = false) Long id) {
     if (null != id) {
-      return clientService.findById(id);
+      return accountService.findById(id);
     } else {
-      return clientService.findAll();
+      return accountService.findAll();
     }
   }
 
   /**
    *
    * @param id
-   * @return
-   */
-  @GetMapping(path = "{id}/accounts", produces = "application/json")
-  public List<AccountResponseDTO> retrieveClientAccounts( @PathVariable(value = "id") Long id) {
-    return accountService.findByClientId(id);
-  }
-
-  /**
-   *
-   * @param id
-   * @param clientRequestDTO
+   * @param accountRequestDTO
    * @return
    */
   @PatchMapping(path = "{id}", produces = "application/json")
   @ResponseStatus(HttpStatus.OK)
-  public ClientResponseDTO updateClient(@PathVariable("id") Long id,
-      @RequestBody ClientRequestDTO clientRequestDTO) {
-    return clientService.update(id, clientRequestDTO);
+  public AccountResponseDTO updateAccount(@PathVariable("id") Long id,
+      @RequestBody AccountRequestDTO accountRequestDTO) {
+    return accountService.update(id, accountRequestDTO);
   }
 
   /**
@@ -83,8 +69,8 @@ public class ClientController {
    */
   @DeleteMapping(path = "{id}", produces = "application/json")
   @ResponseStatus(HttpStatus.OK)
-  public void deleteClient(@PathVariable("id") Long id) {
-    clientService.delete(id);
+  public void deleteAccount(@PathVariable("id") Long id) {
+    accountService.delete(id);
   }
 
 }
