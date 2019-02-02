@@ -20,23 +20,23 @@ public class Client {
   @Getter
   @Setter
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.TABLE)
   @Column(name = "id")
   private long id;
 
   @Getter
   @Setter
-  @Column(name = "firstname")
+  @Column(name = "first_name")
   private String firstName;
 
   @Getter
   @Setter
-  @Column(name = "lastname")
+  @Column(name = "last_name")
   private String lastName;
 
   @Getter
   @Setter
-  @Column(name = "birthdate")
+  @Column(name = "birth_date")
   private Date birthDate;
 
   @Getter
@@ -47,7 +47,7 @@ public class Client {
   @Getter
   @Setter
   @OneToMany(mappedBy = "client")
-  private List<Account> clients;
+  private List<Account> accounts;
 
   @Getter
   @Setter
