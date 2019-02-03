@@ -1,5 +1,9 @@
 package xyz.markpost.bankdemo.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.SwaggerDefinition;
+import io.swagger.annotations.Tag;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,12 +19,21 @@ import org.springframework.web.bind.annotation.RestController;
 import xyz.markpost.bankdemo.model.AccountResponseDTO;
 import xyz.markpost.bankdemo.model.ClientRequestDTO;
 import xyz.markpost.bankdemo.model.ClientResponseDTO;
+import xyz.markpost.bankdemo.model.TransactionResponseDTO;
 import xyz.markpost.bankdemo.service.AccountService;
 import xyz.markpost.bankdemo.service.ClientService;
+import xyz.markpost.bankdemo.service.TransactionService;
 
+
+@SwaggerDefinition(
+    tags = {
+        @Tag(name = "Clients", description = "API request options related to client entities")
+    }
+)
 
 @RestController
 @RequestMapping("v1/clients")
+@Api(tags = {"Clients"})
 public class ClientController {
 
   @Autowired
@@ -28,6 +41,9 @@ public class ClientController {
 
   @Autowired
   private AccountService accountService;
+
+  @Autowired
+  private TransactionService transactionService;
 
   /**
    *
@@ -42,14 +58,14 @@ public class ClientController {
 
   /**
    *
-   * @param id
+   * @param clientId
    * @return
    */
-  @GetMapping(path = "{id}", produces = "application/json")
+  @GetMapping(path = "{clientId}", produces = "application/json")
   public List<ClientResponseDTO> retrieveClient(
-      @PathVariable(value = "id", required = false) Long id) {
-    if (null != id) {
-      return clientService.findById(id);
+      @PathVariable(value = "clientId", required = false) Long clientId) {
+    if (null != clientId) {
+      return clientService.findById(clientId);
     } else {
       return clientService.findAll();
     }
@@ -57,35 +73,56 @@ public class ClientController {
 
   /**
    *
-   * @param id
+   * @param clientId
    * @return
    */
-  @GetMapping(path = "{id}/accounts", produces = "application/json")
-  public List<AccountResponseDTO> retrieveClientAccounts(@PathVariable(value = "id") Long id) {
-    return accountService.findByClientId(id);
+  @GetMapping(path = "{clientId}/accounts", produces = "application/json")
+  public List<AccountResponseDTO> retrieveClientAccounts(
+      @PathVariable(value = "clientId") Long clientId) {
+    return accountService.findByClientId(clientId);
   }
 
   /**
    *
-   * @param id
+   * @param clientId
+   * @return
+   */
+  @GetMapping(path = "{clientId}/accounts/transactions", produces = "application/json")
+  public List<TransactionResponseDTO> retrieveClientAccountsTransactions(
+      @PathVariable(value = "clientId") Long clientId) {
+    List<AccountResponseDTO> accountResponseDTOS = accountService.findByClientId(clientId);
+    List<TransactionResponseDTO> transactionResponseDTOS = new ArrayList<>();
+
+    accountResponseDTOS.forEach(accountResponseDTO -> {
+      List<TransactionResponseDTO> transactions = transactionService
+          .findByAccountId(accountResponseDTO.getId());
+      transactionResponseDTOS.addAll(transactions);
+    });
+
+    return transactionResponseDTOS;
+  }
+
+  /**
+   *
+   * @param clientId
    * @param clientRequestDTO
    * @return
    */
-  @PatchMapping(path = "{id}", produces = "application/json")
+  @PatchMapping(path = "{clientId}", produces = "application/json")
   @ResponseStatus(HttpStatus.OK)
-  public ClientResponseDTO updateClient(@PathVariable("id") Long id,
+  public ClientResponseDTO updateClient(@PathVariable("clientId") Long clientId,
       @RequestBody ClientRequestDTO clientRequestDTO) {
-    return clientService.update(id, clientRequestDTO);
+    return clientService.update(clientId, clientRequestDTO);
   }
 
   /**
    *
-   * @param id
+   * @param clientId
    */
-  @DeleteMapping(path = "{id}", produces = "application/json")
+  @DeleteMapping(path = "{clientId}", produces = "application/json")
   @ResponseStatus(HttpStatus.OK)
-  public void deleteClient(@PathVariable("id") Long id) {
-    clientService.delete(id);
+  public void deleteClient(@PathVariable("clientId") Long clientId) {
+    clientService.delete(clientId);
   }
 
 }

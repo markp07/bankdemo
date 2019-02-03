@@ -1,5 +1,6 @@
 package xyz.markpost.bankdemo.model;
 
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -43,5 +45,15 @@ public class Account {
   @Setter
   @Column(name = "balance")
   private float balance;
+
+  @Getter
+  @Setter
+  @OneToMany(mappedBy = "account")
+  private List<Transaction> transactions;
+
+  @Getter
+  @Setter
+  @OneToMany(mappedBy = "contraAccount")
+  private List<Transaction> contraTransactions;
 
 }

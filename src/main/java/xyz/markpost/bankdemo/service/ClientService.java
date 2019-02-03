@@ -22,9 +22,7 @@ public class ClientService {
   private ClientRepository clientRepository;
 
   /**
-   *
-   * @param clientRequestDTO
-   * @return
+   * TODO: check requestDTO
    */
   public ClientResponseDTO create(ClientRequestDTO clientRequestDTO) {
     Client client = new Client();

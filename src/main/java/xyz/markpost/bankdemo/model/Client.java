@@ -49,17 +49,7 @@ public class Client {
   @OneToMany(mappedBy = "client")
   private List<Account> accounts;
 
-  @Getter
-  @Setter
-  @OneToMany(mappedBy = "account")
-  private List<Transaction> transactions;
-
-  @Getter
-  @Setter
-  @OneToMany(mappedBy = "contraAccount")
-  private List<Transaction> contraTransactions;
-
-  public String getFullName(){
+  public String getFullName() {
     return firstName + " " + lastName;
   }
 
