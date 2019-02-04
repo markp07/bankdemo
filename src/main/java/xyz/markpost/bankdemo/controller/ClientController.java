@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.SwaggerDefinition;
 import io.swagger.annotations.Tag;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import xyz.markpost.bankdemo.model.AccountResponseDTO;
+import xyz.markpost.bankdemo.model.Client;
 import xyz.markpost.bankdemo.model.ClientRequestDTO;
 import xyz.markpost.bankdemo.model.ClientResponseDTO;
 import xyz.markpost.bankdemo.model.TransactionResponseDTO;
@@ -31,6 +33,9 @@ import xyz.markpost.bankdemo.service.TransactionService;
     }
 )
 
+/**
+ * REST controller for client entity and its'relations
+ */
 @RestController
 @RequestMapping("v1/clients")
 @Api(tags = {"Clients"})
@@ -46,9 +51,11 @@ public class ClientController {
   private TransactionService transactionService;
 
   /**
-   *
-   * @param clientRequestDTO
-   * @return
+   * REST API call for creating an client
+   * TODO: add ClientRequestDTO validation (custom annotation?)
+   * TODO: swagger annotation
+   * @param clientRequestDTO DTO containing data for new client entity
+   * @return The response DTO of the created client entity
    */
   @PostMapping(produces = "application/json")
   @ResponseStatus(HttpStatus.CREATED)
@@ -57,9 +64,11 @@ public class ClientController {
   }
 
   /**
-   *
-   * @param clientId
-   * @return
+   * REST API call for retrieving certain client or all clients
+   * TODO: add option for finding set of clients (input list of id's)
+   * TODO: swagger annotation
+   * @param clientId Client to retrieve (not required)
+   * @return List of found clients
    */
   @GetMapping(path = "{clientId}", produces = "application/json")
   public List<ClientResponseDTO> retrieveClient(
@@ -99,6 +108,8 @@ public class ClientController {
       transactionResponseDTOS.addAll(transactions);
     });
 
+    transactionResponseDTOS.sort(new SortByDate());
+
     return transactionResponseDTOS;
   }
 
@@ -125,4 +136,16 @@ public class ClientController {
     clientService.delete(clientId);
   }
 
+}
+
+class SortByDate implements Comparator<TransactionResponseDTO> {
+  public int compare(TransactionResponseDTO p, TransactionResponseDTO q) {
+    if (p.getDate().before(q.getDate())) {
+      return -1;
+    } else if (p.getDate().after(q.getDate())) {
+      return 1;
+    } else {
+      return 0;
+    }
+  }
 }

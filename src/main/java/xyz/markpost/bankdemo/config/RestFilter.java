@@ -1,4 +1,4 @@
-package xyz.markpost.bankdemo;
+package xyz.markpost.bankdemo.config;
 
 import java.io.IOException;
 import javax.servlet.Filter;
@@ -11,10 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
 
 /**
- *
+ * Filter for the REST API
  */
 @Component
-public class JerseyFilter implements Filter {
+public class RestFilter implements Filter {
 
   @Override
   public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
@@ -25,14 +25,6 @@ public class JerseyFilter implements Filter {
     response.setHeader("Access-Control-Max-Age", "36000");
     response.setHeader("Access-Control-Allow-Headers", "origin, content-type, accept");
     chain.doFilter(req, res);
-  }
-
-  @Override
-  public void init(FilterConfig filterConfig) {
-  }
-
-  @Override
-  public void destroy() {
   }
 
 }

@@ -23,6 +23,9 @@ import xyz.markpost.bankdemo.service.TransactionService;
     }
 )
 
+/**
+ * REST controller for transaction entity
+ */
 @RestController
 @RequestMapping("v1/transactions")
 @Api(tags = {"Transactions"})
@@ -32,7 +35,11 @@ public class TransactionController {
   private TransactionService transactionService;
 
   /**
-   * TODO: check requestDTO
+   * REST API call for creating an transaction
+   * TODO: add TransactionRequestDTO validation (custom annotation?)
+   * TODO: swagger annotation
+   * @param transactionRequestDTO DTO containing data for new transaction entity
+   * @return The response DTO of the created transaction entity
    */
   @PostMapping(produces = "application/json")
   @ResponseStatus(HttpStatus.CREATED)
@@ -42,9 +49,11 @@ public class TransactionController {
   }
 
   /**
-   *
-   * @param transactionId
-   * @return
+   * REST API call for retrieving certain transaction or all transactions
+   * TODO: add option for finding set of transactions (input list of id's)
+   * TODO: swagger annotation
+   * @param transactionId Transaction to retrieve (not required)
+   * @return List of found transactions
    */
   @GetMapping(path = "transactionId", produces = "application/json")
   public List<TransactionResponseDTO> retrieveTransaction(

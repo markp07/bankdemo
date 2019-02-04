@@ -1,4 +1,4 @@
-package xyz.markpost.bankdemo;
+package xyz.markpost.bankdemo.config;
 
 import java.util.ArrayList;
 import org.springframework.context.annotation.Bean;
