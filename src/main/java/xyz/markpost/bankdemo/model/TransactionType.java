@@ -1,14 +1,14 @@
 package xyz.markpost.bankdemo.model;
 
+/**
+ * Enum of transaction types
+ */
 public enum TransactionType {
   DEPOSIT("deposit"),
   WITHDRAWAL("withdrawal");
 
   private final String text;
 
-  /**
-   * @param text
-   */
   TransactionType(final String text) {
     this.text = text;
   }

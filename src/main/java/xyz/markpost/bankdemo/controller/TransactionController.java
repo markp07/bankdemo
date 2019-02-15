@@ -35,9 +35,9 @@ public class TransactionController {
   private TransactionService transactionService;
 
   /**
-   * REST API call for creating an transaction
-   * TODO: add TransactionRequestDTO validation (custom annotation?)
-   * TODO: swagger annotation
+   * REST API call for creating an transaction TODO: add TransactionRequestDTO validation (custom
+   * annotation?) TODO: swagger annotation
+   *
    * @param transactionRequestDTO DTO containing data for new transaction entity
    * @return The response DTO of the created transaction entity
    */
@@ -49,20 +49,26 @@ public class TransactionController {
   }
 
   /**
-   * REST API call for retrieving certain transaction or all transactions
-   * TODO: add option for finding set of transactions (input list of id's)
-   * TODO: swagger annotation
+   * REST API call for retrieving certain transaction or all transactions TODO: add option for
+   * finding set of transactions (input list of id's) TODO: swagger annotation
+   *
    * @param transactionId Transaction to retrieve (not required)
    * @return List of found transactions
    */
   @GetMapping(path = "transactionId", produces = "application/json")
   public List<TransactionResponseDTO> retrieveTransaction(
       @PathVariable(value = "transactionId", required = false) Long transactionId) {
+    List<TransactionResponseDTO> transactionResponseDTOS;
     if (null != transactionId) {
-      return transactionService.findById(transactionId);
+      transactionResponseDTOS = transactionService.findById(transactionId);
     } else {
-      return transactionService.findAll();
+      transactionResponseDTOS = transactionService.findAll();
     }
+
+    transactionResponseDTOS.sort(new SortByDate());
+
+    return transactionResponseDTOS;
+
   }
 
 }

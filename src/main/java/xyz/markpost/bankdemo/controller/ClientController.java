@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import xyz.markpost.bankdemo.model.AccountResponseDTO;
-import xyz.markpost.bankdemo.model.Client;
 import xyz.markpost.bankdemo.model.ClientRequestDTO;
 import xyz.markpost.bankdemo.model.ClientResponseDTO;
 import xyz.markpost.bankdemo.model.TransactionResponseDTO;
@@ -51,9 +50,9 @@ public class ClientController {
   private TransactionService transactionService;
 
   /**
-   * REST API call for creating an client
-   * TODO: add ClientRequestDTO validation (custom annotation?)
+   * REST API call for creating an client TODO: add ClientRequestDTO validation (custom annotation?)
    * TODO: swagger annotation
+   *
    * @param clientRequestDTO DTO containing data for new client entity
    * @return The response DTO of the created client entity
    */
@@ -64,9 +63,9 @@ public class ClientController {
   }
 
   /**
-   * REST API call for retrieving certain client or all clients
-   * TODO: add option for finding set of clients (input list of id's)
-   * TODO: swagger annotation
+   * REST API call for retrieving certain client or all clients TODO: add option for finding set of
+   * clients (input list of id's) TODO: swagger annotation
+   *
    * @param clientId Client to retrieve (not required)
    * @return List of found clients
    */
@@ -81,9 +80,10 @@ public class ClientController {
   }
 
   /**
+   * Get all accounts of given client TODO: swagger annotation
    *
-   * @param clientId
-   * @return
+   * @param clientId The id of the client to get the accounts of
+   * @return The list of accounts of the client
    */
   @GetMapping(path = "{clientId}/accounts", produces = "application/json")
   public List<AccountResponseDTO> retrieveClientAccounts(
@@ -92,11 +92,12 @@ public class ClientController {
   }
 
   /**
+   * Get all transactions of given client TODO: swagger annotation
    *
-   * @param clientId
-   * @return
+   * @param clientId The id of the client to get the transactions of
+   * @return The list of transactions of the client
    */
-  @GetMapping(path = "{clientId}/accounts/transactions", produces = "application/json")
+  @GetMapping(path = "{clientId}/transactions", produces = "application/json")
   public List<TransactionResponseDTO> retrieveClientAccountsTransactions(
       @PathVariable(value = "clientId") Long clientId) {
     List<AccountResponseDTO> accountResponseDTOS = accountService.findByClientId(clientId);
@@ -114,10 +115,12 @@ public class ClientController {
   }
 
   /**
+   * Update given client TODO: add clientRequestDTO validation (custom annotation?) TODO: swagger
+   * annotation
    *
-   * @param clientId
-   * @param clientRequestDTO
-   * @return
+   * @param clientId The id of the client to update
+   * @param clientRequestDTO The data of the to update fields
+   * @return The updated client
    */
   @PatchMapping(path = "{clientId}", produces = "application/json")
   @ResponseStatus(HttpStatus.OK)
@@ -127,8 +130,9 @@ public class ClientController {
   }
 
   /**
+   * Delete the client with the given id TODO: swagger annotation
    *
-   * @param clientId
+   * @param clientId The id of the client to delete
    */
   @DeleteMapping(path = "{clientId}", produces = "application/json")
   @ResponseStatus(HttpStatus.OK)
@@ -138,7 +142,11 @@ public class ClientController {
 
 }
 
+/**
+ * Comparator class to sort transactions by date
+ */
 class SortByDate implements Comparator<TransactionResponseDTO> {
+
   public int compare(TransactionResponseDTO p, TransactionResponseDTO q) {
     if (p.getDate().before(q.getDate())) {
       return -1;
