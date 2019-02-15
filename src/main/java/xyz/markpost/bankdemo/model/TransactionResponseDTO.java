@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * TransactionResponseDTO
+ * The DTO for transaction data. We don't want to send all data of the entity back to the requester
  */
 public class TransactionResponseDTO extends TransactionRequestDTO {
 
