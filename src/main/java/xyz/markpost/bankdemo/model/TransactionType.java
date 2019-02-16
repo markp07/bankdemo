@@ -4,8 +4,8 @@ package xyz.markpost.bankdemo.model;
  * Enum of transaction types
  */
 public enum TransactionType {
-  DEPOSIT("deposit"),
-  WITHDRAWAL("withdrawal");
+  DEPOSIT("DEPPOSIT"),
+  WITHDRAWAL("WITHDRAWEL");
 
   private final String text;
 

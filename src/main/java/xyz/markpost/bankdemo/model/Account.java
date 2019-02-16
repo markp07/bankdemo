@@ -14,6 +14,8 @@ import lombok.Setter;
 
 /**
  * Account entity
+ * TODO: add not null
+ * TODO: add validation
  */
 @Entity
 public class Account {
@@ -31,6 +33,7 @@ public class Account {
   @JoinColumn(name = "client_id")
   private Client client;
 
+  //TODO: set validation min & max length and chars + numbers combination
   @Getter
   @Setter
   @Column(name = "number")

@@ -13,6 +13,8 @@ import lombok.Setter;
 
 /**
  * Client entity
+ * TODO: add not null
+ * TODO: add validation
  */
 @Entity
 public class Client {
