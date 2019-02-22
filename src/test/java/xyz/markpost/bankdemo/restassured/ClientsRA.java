@@ -1,4 +1,4 @@
-package xyz.markpost.bankdemo.controller;
+package xyz.markpost.bankdemo.restassured;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -20,8 +20,7 @@ import xyz.markpost.bankdemo.BankDemoApplication;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT, classes=BankDemoApplication.class)
-//@TestPropertySource(locations = "classpath:application.properties")
-public class ClientControllerRA {
+public class ClientsRA {
 
   private final String CONTEXT_PATH = "/api/v1/clients";
 

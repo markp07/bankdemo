@@ -1,10 +1,11 @@
-package xyz.markpost.bankdemo.controller;
+package xyz.markpost.bankdemo.restassured;
 
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,7 +36,7 @@ import xyz.markpost.bankdemo.repository.TransactionRepository;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT, classes = BankDemoApplication.class)
-class AccountControllerRA {
+class AccountsRA {
 
   private final String CONTEXT_PATH = "/api/v1/accounts";
 
@@ -205,19 +207,75 @@ class AccountControllerRA {
     );
   }
 
-  //TODO: retrieve no id
-  //TODO: retrieve id not existing
+  @Test
+  void retrieveAccountNoId() {
+    Response response = RestAssured.given()
+        .when()
+        .get(CONTEXT_PATH + "/")
+        .then()
+        .statusCode(HttpStatus.METHOD_NOT_ALLOWED.value())
+        .contentType("application/json")
+        .extract()
+        .response();
+  }
 
-  //TODO: get transactions of client
+  @Test
+  void retrieveNonExistingAccount() {
+    Response response = RestAssured.given()
+        .when()
+        .get(CONTEXT_PATH + "/1")
+        .then()
+        .statusCode(HttpStatus.OK.value())
+        .contentType("application/json")
+        .extract()
+        .response();
+
+    JsonPath jsonPath = response.jsonPath();
+    List<Object> resultAccounts = jsonPath.getList("");
+    assertTrue(resultAccounts.isEmpty());
+  }
+
+  @Test
+  void retrieveTransactionsOfAccount() {
+    //TODO: get transactions of client
+  }
+
   //TODO: get empty transactions
-  //TODO: client doesn't exist
+
+  @Test
+  void retrieveTransactionsOfNonExistingAccount() {
+    assertThrows(AssertionError.class, () -> RestAssured.given()
+        .when()
+        .get(CONTEXT_PATH + "/1/transactions")
+        .then()
+        .statusCode(HttpStatus.OK.value()));
+  }
+
 
   //TODO: update account
   //TODO: update account no fields given
   //TODO: update account not existing
 
-  //TODO: delete account
-  //TODO: delete non existing account
+  @Test
+  void deleteAccount() {
+    Account account = new Account();
+    account = accountRepository.save(account);
+
+    RestAssured.given()
+        .when()
+        .delete(CONTEXT_PATH + "/" + account.getId())
+        .then()
+        .statusCode(HttpStatus.OK.value());
+  }
+
+  @Test
+  void deleteNonExistingAccount() {
+    assertThrows(AssertionError.class, () -> RestAssured.given()
+        .when()
+        .delete(CONTEXT_PATH + "/0")
+        .then()
+        .statusCode(HttpStatus.OK.value()));
+  }
 
   @AfterEach
   void cleanDatabase() {
