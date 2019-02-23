@@ -19,7 +19,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import xyz.markpost.bankdemo.BankDemoApplication;
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT, classes=BankDemoApplication.class)
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT, classes = BankDemoApplication.class)
 public class TransactionsRA {
 
   private final String CONTEXT_PATH = "/api/v1/clients";
@@ -34,7 +34,7 @@ public class TransactionsRA {
   }
 
   @Test
-  public void testRA(){
+  public void testRA() {
     Map<String, String> client = new HashMap<>();
     String address = "TestAddress";
     client.put("address", address);

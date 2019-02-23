@@ -13,9 +13,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Account entity
- * TODO: add not null
- * TODO: add validation
+ * Account entity TODO: add not null TODO: add validation
  */
 @Entity
 public class Account {
