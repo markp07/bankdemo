@@ -362,7 +362,7 @@ class AccountsRA {
     JsonPath jsonPath = response.jsonPath();
     String message = jsonPath.getString("message");
 
-    assertEquals("Account with id 01not found.", message);
+    assertEquals("Account with id 1 not found.", message);
   }
 
   @Test
@@ -545,4 +545,5 @@ class AccountsRA {
     Iterable<Client> clients = clientRepository.findAll();
     clients.forEach((client -> clientRepository.delete(client)));
   }
+
 }
