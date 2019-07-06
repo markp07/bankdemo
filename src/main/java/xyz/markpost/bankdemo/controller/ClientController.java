@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.SwaggerDefinition;
 import io.swagger.annotations.Tag;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,6 +32,9 @@ import xyz.markpost.bankdemo.service.TransactionService;
     }
 )
 
+/**
+ * REST controller for client entity and its'relations
+ */
 @RestController
 @RequestMapping("v1/clients")
 @Api(tags = {"Clients"})
@@ -46,9 +50,11 @@ public class ClientController {
   private TransactionService transactionService;
 
   /**
+   * REST API call for creating an client TODO: add ClientRequestDTO validation (custom annotation?)
+   * TODO: swagger annotation
    *
-   * @param clientRequestDTO
-   * @return
+   * @param clientRequestDTO DTO containing data for new client entity
+   * @return The response DTO of the created client entity
    */
   @PostMapping(produces = "application/json")
   @ResponseStatus(HttpStatus.CREATED)
@@ -57,9 +63,11 @@ public class ClientController {
   }
 
   /**
+   * REST API call for retrieving certain client or all clients TODO: add option for finding set of
+   * clients (input list of id's) TODO: swagger annotation
    *
-   * @param clientId
-   * @return
+   * @param clientId Client to retrieve (not required)
+   * @return List of found clients
    */
   @GetMapping(path = "{clientId}", produces = "application/json")
   public List<ClientResponseDTO> retrieveClient(
@@ -72,9 +80,10 @@ public class ClientController {
   }
 
   /**
+   * Get all accounts of given client TODO: swagger annotation
    *
-   * @param clientId
-   * @return
+   * @param clientId The id of the client to get the accounts of
+   * @return The list of accounts of the client
    */
   @GetMapping(path = "{clientId}/accounts", produces = "application/json")
   public List<AccountResponseDTO> retrieveClientAccounts(
@@ -83,11 +92,12 @@ public class ClientController {
   }
 
   /**
+   * Get all transactions of given client TODO: swagger annotation
    *
-   * @param clientId
-   * @return
+   * @param clientId The id of the client to get the transactions of
+   * @return The list of transactions of the client
    */
-  @GetMapping(path = "{clientId}/accounts/transactions", produces = "application/json")
+  @GetMapping(path = "{clientId}/transactions", produces = "application/json")
   public List<TransactionResponseDTO> retrieveClientAccountsTransactions(
       @PathVariable(value = "clientId") Long clientId) {
     List<AccountResponseDTO> accountResponseDTOS = accountService.findByClientId(clientId);
@@ -99,14 +109,18 @@ public class ClientController {
       transactionResponseDTOS.addAll(transactions);
     });
 
+    transactionResponseDTOS.sort(new SortByDate());
+
     return transactionResponseDTOS;
   }
 
   /**
+   * Update given client TODO: add clientRequestDTO validation (custom annotation?) TODO: swagger
+   * annotation
    *
-   * @param clientId
-   * @param clientRequestDTO
-   * @return
+   * @param clientId The id of the client to update
+   * @param clientRequestDTO The data of the to update fields
+   * @return The updated client
    */
   @PatchMapping(path = "{clientId}", produces = "application/json")
   @ResponseStatus(HttpStatus.OK)
@@ -116,8 +130,9 @@ public class ClientController {
   }
 
   /**
+   * Delete the client with the given id TODO: swagger annotation
    *
-   * @param clientId
+   * @param clientId The id of the client to delete
    */
   @DeleteMapping(path = "{clientId}", produces = "application/json")
   @ResponseStatus(HttpStatus.OK)
@@ -125,4 +140,20 @@ public class ClientController {
     clientService.delete(clientId);
   }
 
+}
+
+/**
+ * Comparator class to sort transactions by date
+ */
+class SortByDate implements Comparator<TransactionResponseDTO> {
+
+  public int compare(TransactionResponseDTO p, TransactionResponseDTO q) {
+    if (p.getDate().before(q.getDate())) {
+      return -1;
+    } else if (p.getDate().after(q.getDate())) {
+      return 1;
+    } else {
+      return 0;
+    }
+  }
 }
