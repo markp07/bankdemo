@@ -1,8 +1,8 @@
 package xyz.markpost.bankdemo.model;
 
 public enum AccountType {
-  CHECKING("checking"),
-  SAVING("saving");
+  CHECKING("CHECKING"),
+  SAVING("SAVING");
 
   private final String text;
 

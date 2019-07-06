@@ -12,7 +12,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Transaction entity
+ * Transaction entity TODO: add not null TODO: add validation
  */
 @Entity
 public class Transaction {

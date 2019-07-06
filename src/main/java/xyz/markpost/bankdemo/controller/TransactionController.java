@@ -55,7 +55,7 @@ public class TransactionController {
    * @param transactionId Transaction to retrieve (not required)
    * @return List of found transactions
    */
-  @GetMapping(path = "transactionId", produces = "application/json")
+  @GetMapping(path = "{transactionId}", produces = "application/json")
   public List<TransactionResponseDTO> retrieveTransaction(
       @PathVariable(value = "transactionId", required = false) Long transactionId) {
     List<TransactionResponseDTO> transactionResponseDTOS;

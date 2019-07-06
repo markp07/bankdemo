@@ -68,22 +68,62 @@
 
     <!-- Dependencies testing -->
     <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-test</artifactId>
+      <groupId>io.rest-assured</groupId>
+      <artifactId>rest-assured</artifactId>
+      <version>3.3.0</version>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.junit.platform</groupId>
-      <artifactId>junit-platform-surefire-provider</artifactId>
-      <version>1.1.0</version>
+      <groupId>io.rest-assured</groupId>
+      <artifactId>json-path</artifactId>
+      <version>3.3.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.rest-assured</groupId>
+      <artifactId>json-schema-validator</artifactId>
+      <version>3.3.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.rest-assured</groupId>
+      <artifactId>spring-mock-mvc</artifactId>
+      <version>3.3.0</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <!--<dependency>-->
+      <!--<groupId>org.junit.platform</groupId>-->
+      <!--<artifactId>junit-platform-surefire-provider</artifactId>-->
+      <!--<version>1.1.0</version>-->
+      <!--<scope>test</scope>-->
+    <!--</dependency>-->
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.3.1</version>
       <scope>test</scope>
     </dependency>
+    <!--<dependency>-->
+      <!--<groupId>org.junit.platform</groupId>-->
+      <!--<artifactId>junit-platform-launcher</artifactId>-->
+      <!--<version>1.2.0</version>-->
+      <!--<scope>test</scope>-->
+    <!--</dependency>-->
     <dependency> <!-- Creates api docs using unit tests // TODO: check how it works -->
       <groupId>org.springframework.restdocs</groupId>
       <artifactId>spring-restdocs-mockmvc</artifactId>
@@ -116,10 +156,26 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.0.0-M3</version>
+        <dependencies>
+          <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-surefire-provider</artifactId>
+            <version>1.3.1</version>
+          </dependency>
+        </dependencies>
         <configuration>
           <excludes>
             <include>*UT.java</include>
+          </excludes>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <configuration>
+          <excludes>
+            <include>*IT.java</include>
+            <include>*RA.java</include>
           </excludes>
         </configuration>
       </plugin>
