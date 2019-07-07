@@ -1,0 +1,54 @@
+version: '3.3'
+
+services:
+  # Database
+  db:
+    image: mysql:8
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: bank
+      MYSQL_USER: bank-demo
+      MYSQL_PASSWORD: 123456
+    networks:
+      - bank-demo-net
+  # PhpMyAdmin
+  phpmyadmin:
+    depends_on:
+      - db
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    ports:
+      - '8080:80'
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: password
+    networks:
+      - bank-demo-net
+  # Bank Demo SpringBoot
+  bankdemo:
+    depends_on:
+      - db
+    image: bank-demo:0.0.1
+    ports:
+    - "9000:9000"
+    restart: always
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    volumes:
+      - /data/bank_demo
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db/bank?useSSL=false&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=bank-demo
+      - SPRING_DATASOURCE_PASSWORD=123456
+    networks:
+      - bank-demo-net
+networks:
+  bank-demo-net:
+volumes:
+  db_data:
+  bank_demo:
