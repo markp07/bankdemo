@@ -1,6 +1,7 @@
 /target/
 /bin/
 !.mvn/wrapper/maven-wrapper.jar
+.gitconfig
 
 ### STS ###
 .apt_generated
