@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import xyz.markpost.bankdemo.model.TransactionRequestDTO;
 import xyz.markpost.bankdemo.model.TransactionResponseDTO;
 import xyz.markpost.bankdemo.service.TransactionService;
+import xyz.markpost.bankdemo.util.TransactionSortByDate;
 
 @SwaggerDefinition(
     tags = {
@@ -65,7 +66,7 @@ public class TransactionController {
       transactionResponseDTOS = transactionService.findAll();
     }
 
-    transactionResponseDTOS.sort(new SortByDate());
+    transactionResponseDTOS.sort(new TransactionSortByDate());
 
     return transactionResponseDTOS;
 

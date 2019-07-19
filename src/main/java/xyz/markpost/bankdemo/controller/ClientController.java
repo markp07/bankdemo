@@ -24,6 +24,7 @@ import xyz.markpost.bankdemo.model.TransactionResponseDTO;
 import xyz.markpost.bankdemo.service.AccountService;
 import xyz.markpost.bankdemo.service.ClientService;
 import xyz.markpost.bankdemo.service.TransactionService;
+import xyz.markpost.bankdemo.util.TransactionSortByDate;
 
 
 @SwaggerDefinition(
@@ -109,7 +110,7 @@ public class ClientController {
       transactionResponseDTOS.addAll(transactions);
     });
 
-    transactionResponseDTOS.sort(new SortByDate());
+    transactionResponseDTOS.sort(new TransactionSortByDate());
 
     return transactionResponseDTOS;
   }
@@ -142,18 +143,4 @@ public class ClientController {
 
 }
 
-/**
- * Comparator class to sort transactions by date
- */
-class SortByDate implements Comparator<TransactionResponseDTO> {
 
-  public int compare(TransactionResponseDTO p, TransactionResponseDTO q) {
-    if (p.getDate().before(q.getDate())) {
-      return -1;
-    } else if (p.getDate().after(q.getDate())) {
-      return 1;
-    } else {
-      return 0;
-    }
-  }
-}

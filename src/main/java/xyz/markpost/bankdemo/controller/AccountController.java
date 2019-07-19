@@ -20,6 +20,7 @@ import xyz.markpost.bankdemo.model.AccountResponseDTO;
 import xyz.markpost.bankdemo.model.TransactionResponseDTO;
 import xyz.markpost.bankdemo.service.AccountService;
 import xyz.markpost.bankdemo.service.TransactionService;
+import xyz.markpost.bankdemo.util.TransactionSortByDate;
 
 @SwaggerDefinition(
     tags = {
@@ -83,7 +84,7 @@ public class AccountController {
     List<TransactionResponseDTO> transactionResponseDTOS = transactionService
         .findByAccountId(accountId);
 
-    transactionResponseDTOS.sort(new SortByDate());
+    transactionResponseDTOS.sort(new TransactionSortByDate());
 
     return transactionResponseDTOS;
   }
