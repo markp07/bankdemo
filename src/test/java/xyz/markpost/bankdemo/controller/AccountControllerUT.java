@@ -11,7 +11,6 @@ import xyz.markpost.bankdemo.service.AccountService;
 import xyz.markpost.bankdemo.service.TransactionService;
 
 @ExtendWith(SpringExtension.class)
-
 class AccountControllerUT {
 
   @Mock
