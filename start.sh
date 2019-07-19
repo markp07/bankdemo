@@ -1,3 +1,2 @@
-#!/usr/bin/env bash
-docker-compose down --volumes
+#!/usr/bin/env bash=
 docker-compose up -d

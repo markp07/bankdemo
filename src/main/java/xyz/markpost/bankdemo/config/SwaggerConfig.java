@@ -22,11 +22,13 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class SwaggerConfig {
 
+  private static final String BASE_PACKAGE = "xyz.markpost.bankdemo.controller";
+
   @Bean
   public Docket bankDemoApi() {
     return new Docket(DocumentationType.SWAGGER_2)
         .select()
-        .apis(RequestHandlerSelectors.any())
+        .apis(RequestHandlerSelectors.basePackage(BASE_PACKAGE))
         .paths(PathSelectors.any())
         .build()
         .apiInfo(apiInfo());
