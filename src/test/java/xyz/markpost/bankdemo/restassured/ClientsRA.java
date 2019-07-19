@@ -1,22 +1,36 @@
 package xyz.markpost.bankdemo.restassured;
 
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import io.restassured.RestAssured;
+import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+import java.sql.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import xyz.markpost.bankdemo.BankDemoApplication;
+import xyz.markpost.bankdemo.model.Account;
+import xyz.markpost.bankdemo.model.AccountType;
+import xyz.markpost.bankdemo.model.Client;
+import xyz.markpost.bankdemo.model.Transaction;
+import xyz.markpost.bankdemo.repository.AccountRepository;
+import xyz.markpost.bankdemo.repository.ClientRepository;
+import xyz.markpost.bankdemo.repository.TransactionRepository;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT, classes = BankDemoApplication.class)
@@ -27,28 +41,43 @@ public class ClientsRA {
   @LocalServerPort
   private int port;
 
+  @Autowired
+  private AccountRepository accountRepository;
+
+  @Autowired
+  private ClientRepository clientRepository;
+
+  @Autowired
+  private TransactionRepository transactionRepository;
+
+  private Client client;
+
   @BeforeEach
   void setUp() {
     RestAssured.baseURI = "http://localhost";
     RestAssured.port = port;
+
+    cleanDatabase();
+
+    client = new Client();
+    client.setFirstName("Foo");
+    client.setLastName("Bar");
+    client.setBirthDate(new Date(0));
+    client.setAddress("Test Address 1");
   }
 
   @Test
-  public void testRA() {
-    Map<String, String> client = new HashMap<>();
-    String address = "TestAddress";
-    client.put("address", address);
-    String birthDate = "1900-01-01";
-    client.put("birthDate", birthDate);
-    String firstName = "TestName";
-    client.put("firstName", firstName);
-    String lastName = "NameTest";
-    client.put("lastName", lastName);
+  void createClientSuccessTest() {
+    Map<String, Object> clientData = new HashMap<>();
+    clientData.put("firstName", this.client.getFirstName());
+    clientData.put("lastName", this.client.getLastName());
+    clientData.put("birthDate", this.client.getBirthDate());
+    clientData.put("address", this.client.getAddress());
 
     Response response = RestAssured.given()
         .contentType("application/json")
         .accept("application/json")
-        .body(client)
+        .body(clientData)
         .when()
         .post(CONTEXT_PATH)
         .then()
@@ -57,20 +86,362 @@ public class ClientsRA {
         .extract()
         .response();
 
-    String resultId = response.jsonPath().getString("id");
-    assertNotNull(resultId);
+    JsonPath jsonPath = response.jsonPath();
+    String resultId = jsonPath.getString("id");
+    String firstName = jsonPath.getString("firstName");
+    String lastName = jsonPath.getString("lastName");
+    String birthDate = jsonPath.getString("birthDate");
+    String address = jsonPath.getString("address");
 
-    String resultAddress = response.jsonPath().getString("address");
-    assertEquals(address, resultAddress);
+    assertAll(
+        "Check return json after creating client.",
+        () -> assertNotNull(resultId),
+        () -> assertEquals(client.getFirstName(), firstName),
+        () -> assertEquals(client.getLastName(), lastName),
+        () -> assertEquals(client.getBirthDate().toString(), birthDate),
+        () -> assertEquals(client.getAddress(), address),
+        () -> assertNotNull(lastName)
+    );
+  }
 
-    String resultBirthDate = response.jsonPath().getString("birthDate");
-    assertEquals(birthDate, resultBirthDate);
+  @Test
+  void createClientNoBodyTest() {
+    Response response = RestAssured.given()
+        .contentType("application/json")
+        .when()
+        .post(CONTEXT_PATH)
+        .then()
+        .statusCode(HttpStatus.BAD_REQUEST.value())
+        .contentType("application/json")
+        .extract()
+        .response();
 
-    String resultFirstName = response.jsonPath().getString("firstName");
-    assertEquals(resultFirstName, firstName);
+    JsonPath jsonPath = response.jsonPath();
+    String message = jsonPath.getString("message");
 
-    String resultLastName = response.jsonPath().getString("lastName");
-    assertEquals(resultLastName, lastName);
+    assertEquals("Client details missing in request.", message);
+  }
+
+  @Test
+  void createClientEmptyBodyTest() {
+    Map<String, Object> clientData = new HashMap<>();
+
+    Response response = RestAssured.given()
+        .contentType("application/json")
+        .accept("application/json")
+        .body(clientData)
+        .when()
+        .post(CONTEXT_PATH)
+        .then()
+        .statusCode(HttpStatus.BAD_REQUEST.value())
+        .contentType("application/json")
+        .extract()
+        .response();
+
+    JsonPath jsonPath = response.jsonPath();
+    String message = jsonPath.getString("message");
+
+    assertEquals("Client details missing in request.", message);
+  }
+
+  @Test
+  void createClientNoFirstNameTest() {
+    Map<String, Object> clientData = new HashMap<>();
+    clientData.put("lastName", this.client.getLastName());
+    clientData.put("birthDate", this.client.getBirthDate());
+    clientData.put("address", this.client.getAddress());
+
+    Response response = RestAssured.given()
+        .contentType("application/json")
+        .accept("application/json")
+        .body(clientData)
+        .when()
+        .post(CONTEXT_PATH)
+        .then()
+        .statusCode(HttpStatus.BAD_REQUEST.value())
+        .contentType("application/json")
+        .extract()
+        .response();
+
+    JsonPath jsonPath = response.jsonPath();
+    String message = jsonPath.getString("message");
+
+    assertEquals("Client details missing in request.", message);
+  }
+  @Test
+  void createClientNoLastNameTest() {
+    Map<String, Object> clientData = new HashMap<>();
+    clientData.put("firstName", this.client.getFirstName());
+    clientData.put("birthDate", this.client.getBirthDate());
+    clientData.put("address", this.client.getAddress());
+
+    Response response = RestAssured.given()
+        .contentType("application/json")
+        .accept("application/json")
+        .body(clientData)
+        .when()
+        .post(CONTEXT_PATH)
+        .then()
+        .statusCode(HttpStatus.BAD_REQUEST.value())
+        .contentType("application/json")
+        .extract()
+        .response();
+
+    JsonPath jsonPath = response.jsonPath();
+    String message = jsonPath.getString("message");
+
+    assertEquals("Client details missing in request.", message);
+  }
+  @Test
+  void createClientNoBirthDateTest() {
+    Map<String, Object> clientData = new HashMap<>();
+    clientData.put("firstName", this.client.getFirstName());
+    clientData.put("lastName", this.client.getLastName());
+    clientData.put("address", this.client.getAddress());
+
+    Response response = RestAssured.given()
+        .contentType("application/json")
+        .accept("application/json")
+        .body(clientData)
+        .when()
+        .post(CONTEXT_PATH)
+        .then()
+        .statusCode(HttpStatus.BAD_REQUEST.value())
+        .contentType("application/json")
+        .extract()
+        .response();
+
+    JsonPath jsonPath = response.jsonPath();
+    String message = jsonPath.getString("message");
+
+    assertEquals("Client details missing in request.", message);
+  }
+
+  @Test
+  void createClientNoAddressTest() {
+    Map<String, Object> clientData = new HashMap<>();
+    clientData.put("firstName", this.client.getFirstName());
+    clientData.put("lastName", this.client.getLastName());
+    clientData.put("birthDate", this.client.getBirthDate());
+
+    Response response = RestAssured.given()
+        .contentType("application/json")
+        .accept("application/json")
+        .body(clientData)
+        .when()
+        .post(CONTEXT_PATH)
+        .then()
+        .statusCode(HttpStatus.BAD_REQUEST.value())
+        .contentType("application/json")
+        .extract()
+        .response();
+
+    JsonPath jsonPath = response.jsonPath();
+    String message = jsonPath.getString("message");
+
+    assertEquals("Client details missing in request.", message);
+  }
+
+  @Test
+  void retrieveClient() {
+    Client clientLocal = clientRepository.save(client);
+
+    Response response = RestAssured.given()
+        .when()
+        .get(CONTEXT_PATH + "/" + clientLocal.getId())
+        .then()
+        .statusCode(HttpStatus.OK.value())
+        .contentType("application/json")
+        .extract()
+        .response();
+
+    JsonPath jsonPath = response.jsonPath();
+    List<Object> resultAccounts = jsonPath.getList("");
+    Map<String, Object> resultClient = (Map<String, Object>) resultAccounts.get(0);
+    int resultId = (int) resultClient.get("id");
+    String firstName = (String) resultClient.get("firstName");
+    String lastName = (String) resultClient.get("lastName");
+    String birthDate = (String) resultClient.get("birthDate");
+    String address = (String) resultClient.get("address");
+
+    assertAll(
+        "Check return json after creating client.",
+        () -> assertThat(resultId).isGreaterThan(0),
+        () -> assertEquals(client.getFirstName(), firstName),
+        () -> assertEquals(client.getLastName(), lastName),
+        () -> assertEquals(client.getBirthDate().toString(), birthDate),
+        () -> assertEquals(client.getAddress(), address)
+    );
+  }
+
+  @Test
+  void retrieveNonExistingClient() {
+    Response response = RestAssured.given()
+        .when()
+        .get(CONTEXT_PATH + "/1")
+        .then()
+        .statusCode(HttpStatus.OK.value())
+        .contentType("application/json")
+        .extract()
+        .response();
+
+    JsonPath jsonPath = response.jsonPath();
+    List<Object> resultClients = jsonPath.getList("");
+    assertTrue(resultClients.isEmpty());
+  }
+
+  @Test
+  void retrieveClientNoId() {
+    RestAssured.given()
+        .when()
+        .get(CONTEXT_PATH + "/")
+        .then()
+        .statusCode(HttpStatus.METHOD_NOT_ALLOWED.value())
+        .contentType("application/json")
+        .extract()
+        .response();
+  }
+
+  //TODO
+
+  //Accounts of client
+  //Transactions of accpunts of client
+
+
+
+  @Test
+  void updateAccountSuccessTest() {
+    Client clientLocal = clientRepository.save(client);
+
+    Map<String, Object> clientUpdateData = new HashMap<>();
+    clientUpdateData.put("address", "New address 1");
+
+    Response response = RestAssured.given()
+        .contentType("application/json")
+        .accept("application/json")
+        .body(clientUpdateData)
+        .when()
+        .patch(CONTEXT_PATH + "/" + clientLocal.getId())
+        .then()
+        .statusCode(HttpStatus.OK.value())
+        .contentType("application/json")
+        .extract()
+        .response();
+
+    JsonPath jsonPath = response.jsonPath();
+    long resultId = Long.parseLong(jsonPath.getString("id"));
+    String firstName = jsonPath.getString("firstName");
+    String lastName = jsonPath.getString("lastName");
+    String birthDate = jsonPath.getString("birthDate");
+    String address = jsonPath.getString("address");
+
+    assertAll(
+        "Check return json after updating client.",
+        () -> assertEquals(clientLocal.getId(), resultId),
+        () -> assertEquals(clientLocal.getFirstName(), firstName),
+        () -> assertEquals(clientLocal.getLastName(), lastName),
+        () -> assertEquals(clientLocal.getBirthDate().toString(), birthDate),
+        () -> assertEquals("New address 1", address),
+        () -> assertNotNull(lastName)
+    );
+  }
+
+  @Test
+  void updateClientNoUpdatedFieldsSuccessTest() {
+    Client clientLocal = clientRepository.save(client);
+
+    Map<String, Object> clientUpdateData = new HashMap<>();
+
+    Response response = RestAssured.given()
+        .contentType("application/json")
+        .accept("application/json")
+        .body(clientUpdateData)
+        .when()
+        .patch(CONTEXT_PATH + "/" + clientLocal.getId())
+        .then()
+        .statusCode(HttpStatus.OK.value())
+        .contentType("application/json")
+        .extract()
+        .response();
+
+    JsonPath jsonPath = response.jsonPath();
+    long resultId = Long.parseLong(jsonPath.getString("id"));
+    String firstName = jsonPath.getString("firstName");
+    String lastName = jsonPath.getString("lastName");
+    String birthDate = jsonPath.getString("birthDate");
+    String address = jsonPath.getString("address");
+
+    assertAll(
+        "Check return json after updating client.",
+        () -> assertEquals(clientLocal.getId(), resultId),
+        () -> assertEquals(clientLocal.getFirstName(), firstName),
+        () -> assertEquals(clientLocal.getLastName(), lastName),
+        () -> assertEquals(clientLocal.getBirthDate().toString(), birthDate),
+        () -> assertEquals(clientLocal.getAddress(), address),
+        () -> assertNotNull(lastName)
+    );
+  }
+
+  @Test
+  void updateNotExistingClient() {
+    Map<String, Object> clientUpdate = new HashMap<>();
+
+    Response response = RestAssured.given()
+        .contentType("application/json")
+        .accept("application/json")
+        .body(clientUpdate)
+        .when()
+        .patch(CONTEXT_PATH + "/0")
+        .then()
+        .statusCode(HttpStatus.NOT_FOUND.value())
+        .contentType("application/json")
+        .extract()
+        .response();
+
+    JsonPath jsonPath = response.jsonPath();
+    String message = jsonPath.getString("message");
+
+    assertEquals("Client with id 0 not found.", message);
+  }
+
+  @Test
+  void deleteClient() {
+    Client client = new Client();
+    client = clientRepository.save(client);
+
+    RestAssured.given()
+        .when()
+        .delete(CONTEXT_PATH + "/" + client.getId())
+        .then()
+        .statusCode(HttpStatus.OK.value());
+  }
+
+  @Test
+  void deleteNonExistingClient() {
+    Response response = RestAssured.given()
+        .when()
+        .patch(CONTEXT_PATH + "/0")
+        .then()
+        .statusCode(HttpStatus.NO_CONTENT.value())
+        .contentType("application/json")
+        .extract()
+        .response();
+
+    JsonPath jsonPath = response.jsonPath();
+    String message = jsonPath.getString("message");
+
+    assertEquals("Client with id 0 not found.", message);
+  }
+
+  private void cleanDatabase() {
+    Iterable<Transaction> transactions = transactionRepository.findAll();
+    transactions.forEach((transaction -> transactionRepository.delete(transaction)));
+
+    Iterable<Account> accounts = accountRepository.findAll();
+    accounts.forEach((account -> accountRepository.delete(account)));
+
+    Iterable<Client> clients = clientRepository.findAll();
+    clients.forEach((client -> clientRepository.delete(client)));
   }
 
 }

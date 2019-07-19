@@ -1,6 +1,7 @@
 package xyz.markpost.bankdemo.restassured;
 
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -218,7 +219,7 @@ class AccountsRA {
     Account finalAccount = account;
     assertAll(
         "Check return json after creating account.",
-        () -> assertNotNull(resultId),
+        () -> assertThat(resultId).isGreaterThan(0),
         () -> assertEquals(client.getFullName(), name),
         () -> assertEquals(finalAccount.getNumber(), number),
         () -> assertEquals(Long.toString(client.getId()), Integer.toString(clientId)),
@@ -313,7 +314,7 @@ class AccountsRA {
     Account finalAccount1 = account2;
     assertAll(
         "Check return json after creating account.",
-        () -> assertNotNull(resultId),
+        () -> assertThat(resultId).isGreaterThan(0),
         () -> assertEquals(finalAccount.getId(), accountId),
         () -> assertEquals(finalAccount.getClient().getFullName(), accountName),
         () -> assertEquals(finalAccount1.getId(), contraAccountId),
