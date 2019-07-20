@@ -64,7 +64,7 @@ public class ClientService {
 
     clients.forEach(client -> {
       ClientResponseDTO clientResponseDTO = createResponseClient(client);
-      clientResponseDTOS.add(clientResponseDTO);
+      if(null != clientResponseDTO) clientResponseDTOS.add(clientResponseDTO);
     });
 
     return clientResponseDTOS;
@@ -122,12 +122,22 @@ public class ClientService {
     }
   }
 
+  /**
+   *
+   * @param id
+   * @return
+   */
   private Client findSingleClient(Long id) {
     Optional<Client> clientOptional = clientRepository.findById(id);
 
     return clientOptional.orElse(null);
   }
 
+  /**
+   *
+   * @param client
+   * @return
+   */
   private ClientResponseDTO createResponseClient(Client client) {
     ClientResponseDTO clientResponseDTO = new ClientResponseDTO();
 

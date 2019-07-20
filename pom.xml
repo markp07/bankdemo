@@ -118,11 +118,6 @@
       <artifactId>junit-jupiter-engine</artifactId>
       <scope>test</scope>
     </dependency>
-    <dependency> <!-- Creates api docs using unit tests // TODO: check how it works -->
-      <groupId>org.springframework.restdocs</groupId>
-      <artifactId>spring-restdocs-mockmvc</artifactId>
-      <scope>test</scope>
-    </dependency>
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
@@ -158,19 +153,19 @@
           </dependency>
         </dependencies>
         <configuration>
-          <excludes>
+          <includes>
             <include>*UT.java</include>
-          </excludes>
+          </includes>
         </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-failsafe-plugin</artifactId>
         <configuration>
-          <excludes>
+          <includes>
             <include>*IT.java</include>
             <include>*RA.java</include>
-          </excludes>
+          </includes>
         </configuration>
       </plugin>
     </plugins>
