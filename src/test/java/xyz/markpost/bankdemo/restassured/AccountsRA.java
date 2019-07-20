@@ -346,7 +346,7 @@ class AccountsRA {
 
     JsonPath jsonPath = response.jsonPath();
     List<Object> resultTransactions = jsonPath.getList("");
-    assertTrue(resultTransactions.isEmpty());
+    assertThat(resultTransactions).isEmpty();
   }
 
   @Test
