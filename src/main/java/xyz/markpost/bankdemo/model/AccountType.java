@@ -7,7 +7,7 @@ public enum AccountType {
   private final String text;
 
   /**
-   * @param text
+   *
    */
   AccountType(final String text) {
     this.text = text;

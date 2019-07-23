@@ -15,11 +15,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import xyz.markpost.bankdemo.model.AccountRequestDTO;
-import xyz.markpost.bankdemo.model.AccountResponseDTO;
-import xyz.markpost.bankdemo.model.TransactionResponseDTO;
+import xyz.markpost.bankdemo.dto.AccountRequestDTO;
+import xyz.markpost.bankdemo.dto.AccountResponseDTO;
+import xyz.markpost.bankdemo.dto.TransactionResponseDTO;
 import xyz.markpost.bankdemo.service.AccountService;
 import xyz.markpost.bankdemo.service.TransactionService;
+import xyz.markpost.bankdemo.util.TransactionSortByDate;
 
 @SwaggerDefinition(
     tags = {
@@ -35,11 +36,18 @@ import xyz.markpost.bankdemo.service.TransactionService;
 @Api(tags = {"Accounts"})
 public class AccountController {
 
-  @Autowired
-  private AccountService accountService;
+  private final AccountService accountService;
+
+  private final TransactionService transactionService;
 
   @Autowired
-  private TransactionService transactionService;
+  public AccountController(
+      AccountService accountService,
+      TransactionService transactionService
+  ) {
+    this.accountService = accountService;
+    this.transactionService = transactionService;
+  }
 
   /**
    * REST API call for creating an account TODO: add AccountRequestDTO validation (custom
@@ -83,7 +91,7 @@ public class AccountController {
     List<TransactionResponseDTO> transactionResponseDTOS = transactionService
         .findByAccountId(accountId);
 
-    transactionResponseDTOS.sort(new SortByDate());
+    transactionResponseDTOS.sort(new TransactionSortByDate());
 
     return transactionResponseDTOS;
   }

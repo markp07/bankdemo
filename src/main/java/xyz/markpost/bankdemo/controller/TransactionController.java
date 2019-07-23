@@ -13,9 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import xyz.markpost.bankdemo.model.TransactionRequestDTO;
-import xyz.markpost.bankdemo.model.TransactionResponseDTO;
+import xyz.markpost.bankdemo.dto.TransactionRequestDTO;
+import xyz.markpost.bankdemo.dto.TransactionResponseDTO;
 import xyz.markpost.bankdemo.service.TransactionService;
+import xyz.markpost.bankdemo.util.TransactionSortByDate;
 
 @SwaggerDefinition(
     tags = {
@@ -31,8 +32,14 @@ import xyz.markpost.bankdemo.service.TransactionService;
 @Api(tags = {"Transactions"})
 public class TransactionController {
 
+  private final TransactionService transactionService;
+
   @Autowired
-  private TransactionService transactionService;
+  public TransactionController(
+      TransactionService transactionService
+  ) {
+    this.transactionService = transactionService;
+  }
 
   /**
    * REST API call for creating an transaction TODO: add TransactionRequestDTO validation (custom
@@ -65,7 +72,7 @@ public class TransactionController {
       transactionResponseDTOS = transactionService.findAll();
     }
 
-    transactionResponseDTOS.sort(new SortByDate());
+    transactionResponseDTOS.sort(new TransactionSortByDate());
 
     return transactionResponseDTOS;
 

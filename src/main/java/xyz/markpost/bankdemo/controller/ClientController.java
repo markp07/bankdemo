@@ -4,7 +4,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.SwaggerDefinition;
 import io.swagger.annotations.Tag;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,13 +16,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import xyz.markpost.bankdemo.model.AccountResponseDTO;
-import xyz.markpost.bankdemo.model.ClientRequestDTO;
-import xyz.markpost.bankdemo.model.ClientResponseDTO;
-import xyz.markpost.bankdemo.model.TransactionResponseDTO;
+import xyz.markpost.bankdemo.dto.AccountResponseDTO;
+import xyz.markpost.bankdemo.dto.ClientRequestDTO;
+import xyz.markpost.bankdemo.dto.ClientResponseDTO;
+import xyz.markpost.bankdemo.dto.TransactionResponseDTO;
 import xyz.markpost.bankdemo.service.AccountService;
 import xyz.markpost.bankdemo.service.ClientService;
 import xyz.markpost.bankdemo.service.TransactionService;
+import xyz.markpost.bankdemo.util.TransactionSortByDate;
 
 
 @SwaggerDefinition(
@@ -40,14 +40,22 @@ import xyz.markpost.bankdemo.service.TransactionService;
 @Api(tags = {"Clients"})
 public class ClientController {
 
-  @Autowired
-  private ClientService clientService;
+  private final ClientService clientService;
+
+  private final AccountService accountService;
+
+  private final TransactionService transactionService;
 
   @Autowired
-  private AccountService accountService;
-
-  @Autowired
-  private TransactionService transactionService;
+  public ClientController(
+      ClientService clientService,
+      AccountService accountService,
+      TransactionService transactionService
+  ) {
+    this.clientService = clientService;
+    this.accountService = accountService;
+    this.transactionService = transactionService;
+  }
 
   /**
    * REST API call for creating an client TODO: add ClientRequestDTO validation (custom annotation?)
@@ -109,7 +117,7 @@ public class ClientController {
       transactionResponseDTOS.addAll(transactions);
     });
 
-    transactionResponseDTOS.sort(new SortByDate());
+    transactionResponseDTOS.sort(new TransactionSortByDate());
 
     return transactionResponseDTOS;
   }
@@ -142,18 +150,4 @@ public class ClientController {
 
 }
 
-/**
- * Comparator class to sort transactions by date
- */
-class SortByDate implements Comparator<TransactionResponseDTO> {
 
-  public int compare(TransactionResponseDTO p, TransactionResponseDTO q) {
-    if (p.getDate().before(q.getDate())) {
-      return -1;
-    } else if (p.getDate().after(q.getDate())) {
-      return 1;
-    } else {
-      return 0;
-    }
-  }
-}

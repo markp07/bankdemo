@@ -499,7 +499,6 @@ class TransactionsRA {
   }
 
 
-
   @Test
   void createTransactionNoTypeGivenTest() {
     Map<String, Object> transaction = new HashMap<>();
@@ -574,7 +573,6 @@ class TransactionsRA {
         .contentType("application/json")
         .extract()
         .response();
-
 
     JsonPath jsonPath = response.jsonPath();
     String message = jsonPath.getString("message");
