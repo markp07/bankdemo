@@ -36,11 +36,18 @@ import xyz.markpost.bankdemo.util.TransactionSortByDate;
 @Api(tags = {"Accounts"})
 public class AccountController {
 
-  @Autowired
   private AccountService accountService;
 
-  @Autowired
   private TransactionService transactionService;
+
+  @Autowired
+  public AccountController(
+      AccountService accountService,
+      TransactionService transactionService
+  ) {
+    this.accountService = accountService;
+    this.transactionService = transactionService;
+  }
 
   /**
    * REST API call for creating an account TODO: add AccountRequestDTO validation (custom

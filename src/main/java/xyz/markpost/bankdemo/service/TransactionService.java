@@ -7,10 +7,10 @@ import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import xyz.markpost.bankdemo.model.Account;
-import xyz.markpost.bankdemo.model.Transaction;
 import xyz.markpost.bankdemo.dto.TransactionRequestDTO;
 import xyz.markpost.bankdemo.dto.TransactionResponseDTO;
+import xyz.markpost.bankdemo.model.Account;
+import xyz.markpost.bankdemo.model.Transaction;
 import xyz.markpost.bankdemo.model.TransactionType;
 import xyz.markpost.bankdemo.repository.AccountRepository;
 import xyz.markpost.bankdemo.repository.TransactionRepository;
@@ -21,17 +21,22 @@ import xyz.markpost.bankdemo.util.TransactionSortByDate;
 @Transactional
 public class TransactionService {
 
-  @Autowired
+  private AccountRepository accountRepository;
+
   private TransactionRepository transactionRepository;
 
   @Autowired
-  private AccountRepository accountRepository;
+  public TransactionService(
+      AccountRepository accountRepository,
+      TransactionRepository transactionRepository
+  ) {
+    this.accountRepository = accountRepository;
+    this.transactionRepository = transactionRepository;
+  }
 
 
   /**
    * TODO: check requestDTO
-   * @param transactionRequestDTO
-   * @return
    */
   public TransactionResponseDTO create(TransactionRequestDTO transactionRequestDTO) {
     Transaction transaction = new Transaction();
@@ -81,8 +86,6 @@ public class TransactionService {
 
   /**
    *
-   * @param transactionId
-   * @return
    */
   public List<TransactionResponseDTO> findById(Long transactionId) {
     Transaction account = findSingleTransaction(transactionId);
@@ -99,8 +102,6 @@ public class TransactionService {
 
   /**
    *
-   * @param accountId
-   * @return
    */
   public List<TransactionResponseDTO> findByAccountId(Long accountId) {
     Account account = findSingleAccount(accountId);
@@ -127,7 +128,6 @@ public class TransactionService {
 
   /**
    *
-   * @return
    */
   public List<TransactionResponseDTO> findAll() {
     Iterable<Transaction> transactions = transactionRepository.findAll();
@@ -145,8 +145,6 @@ public class TransactionService {
 
   /**
    *
-   * @param transactionId
-   * @return
    */
   private Transaction findSingleTransaction(Long transactionId) {
     Optional<Transaction> transactionOptional = transactionRepository.findById(transactionId);
@@ -156,8 +154,6 @@ public class TransactionService {
 
   /**
    *
-   * @param accountId
-   * @return
    */
   private Account findSingleAccount(Long accountId) {
     Optional<Account> accountOptional = accountRepository.findById(accountId);
@@ -167,8 +163,6 @@ public class TransactionService {
 
   /**
    *
-   * @param transaction
-   * @return
    */
   private TransactionResponseDTO createResponseTransaction(Transaction transaction) {
     TransactionResponseDTO transactionResponseDTO = new TransactionResponseDTO();

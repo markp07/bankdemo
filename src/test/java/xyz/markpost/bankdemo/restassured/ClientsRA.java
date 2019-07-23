@@ -171,6 +171,7 @@ class ClientsRA {
 
     assertEquals("Client details missing in request.", message);
   }
+
   @Test
   void createClientNoLastNameTest() {
     Map<String, Object> clientData = new HashMap<>();
@@ -195,6 +196,7 @@ class ClientsRA {
 
     assertEquals("Client details missing in request.", message);
   }
+
   @Test
   void createClientNoBirthDateTest() {
     Map<String, Object> clientData = new HashMap<>();

@@ -1,25 +1,28 @@
 package xyz.markpost.bankdemo.dto;
 
 import java.sql.Date;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * ClientRequestDTO
+ */
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class ClientRequestDTO {
 
-  @Getter
-  @Setter
   private String firstName;
 
-  @Getter
-  @Setter
   private String lastName;
 
-  @Getter
-  @Setter
   private Date birthDate;
 
-  @Getter
-  @Setter
   private String address;
 
 }

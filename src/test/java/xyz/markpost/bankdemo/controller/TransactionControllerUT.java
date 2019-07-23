@@ -2,7 +2,6 @@ package xyz.markpost.bankdemo.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.sql.Date;
@@ -26,7 +25,7 @@ class TransactionControllerUT {
   private TransactionService transactionService;
 
   @InjectMocks
-  TransactionController transactionController = new TransactionController();
+  private TransactionController transactionController;
 
   @Test
   @DisplayName("Test creating a transaction")

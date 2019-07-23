@@ -2,8 +2,6 @@ package xyz.markpost.bankdemo.service;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -15,9 +13,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import xyz.markpost.bankdemo.model.Client;
 import xyz.markpost.bankdemo.dto.ClientRequestDTO;
 import xyz.markpost.bankdemo.dto.ClientResponseDTO;
+import xyz.markpost.bankdemo.model.Client;
 import xyz.markpost.bankdemo.repository.ClientRepository;
 
 

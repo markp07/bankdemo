@@ -8,9 +8,9 @@ import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import xyz.markpost.bankdemo.model.Client;
 import xyz.markpost.bankdemo.dto.ClientRequestDTO;
 import xyz.markpost.bankdemo.dto.ClientResponseDTO;
+import xyz.markpost.bankdemo.model.Client;
 import xyz.markpost.bankdemo.repository.ClientRepository;
 
 
@@ -18,8 +18,14 @@ import xyz.markpost.bankdemo.repository.ClientRepository;
 @Transactional
 public class ClientService {
 
-  @Autowired
   private ClientRepository clientRepository;
+
+  @Autowired
+  public ClientService(
+      ClientRepository clientRepository
+  ) {
+    this.clientRepository = clientRepository;
+  }
 
   /**
    * TODO: check requestDTO
@@ -39,8 +45,6 @@ public class ClientService {
 
   /**
    *
-   * @param id
-   * @return
    */
   public List<ClientResponseDTO> findById(Long id) {
     Client client = findSingleClient(id);
@@ -56,7 +60,6 @@ public class ClientService {
 
   /**
    *
-   * @return
    */
   public List<ClientResponseDTO> findAll() {
     Iterable<Client> clients = clientRepository.findAll();
@@ -64,7 +67,9 @@ public class ClientService {
 
     clients.forEach(client -> {
       ClientResponseDTO clientResponseDTO = createResponseClient(client);
-      if(null != clientResponseDTO) clientResponseDTOS.add(clientResponseDTO);
+      if (null != clientResponseDTO) {
+        clientResponseDTOS.add(clientResponseDTO);
+      }
     });
 
     return clientResponseDTOS;
@@ -72,9 +77,6 @@ public class ClientService {
 
   /**
    *
-   * @param id
-   * @param clientRequestDTO
-   * @return
    */
   public ClientResponseDTO update(Long id, ClientRequestDTO clientRequestDTO) {
     Client client = findSingleClient(id);
@@ -110,7 +112,6 @@ public class ClientService {
 
   /**
    *
-   * @param id
    */
   public void delete(Long id) {
     Client client = findSingleClient(id);
@@ -124,8 +125,6 @@ public class ClientService {
 
   /**
    *
-   * @param id
-   * @return
    */
   private Client findSingleClient(Long id) {
     Optional<Client> clientOptional = clientRepository.findById(id);
@@ -135,8 +134,6 @@ public class ClientService {
 
   /**
    *
-   * @param client
-   * @return
    */
   private ClientResponseDTO createResponseClient(Client client) {
     ClientResponseDTO clientResponseDTO = new ClientResponseDTO();

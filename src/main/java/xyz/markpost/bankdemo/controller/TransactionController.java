@@ -32,8 +32,14 @@ import xyz.markpost.bankdemo.util.TransactionSortByDate;
 @Api(tags = {"Transactions"})
 public class TransactionController {
 
-  @Autowired
   private TransactionService transactionService;
+
+  @Autowired
+  public TransactionController(
+      TransactionService transactionService
+  ) {
+    this.transactionService = transactionService;
+  }
 
   /**
    * REST API call for creating an transaction TODO: add TransactionRequestDTO validation (custom

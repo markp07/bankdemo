@@ -33,7 +33,7 @@ class ClientControllerUT {
 
   @Mock
   private TransactionService transactionService;
-  
+
   @InjectMocks
   ClientController clientController;
 
@@ -163,7 +163,8 @@ class ClientControllerUT {
   void updateClientTest() {
     ClientRequestDTO clientRequestDTO = new ClientRequestDTO();
     ClientResponseDTO clientResponseDTO = new ClientResponseDTO();
-    when(clientService.update(any(Long.class),any(ClientRequestDTO.class))).thenReturn(clientResponseDTO);
+    when(clientService.update(any(Long.class), any(ClientRequestDTO.class)))
+        .thenReturn(clientResponseDTO);
 
     ClientResponseDTO result = clientController.updateClient(1L, clientRequestDTO);
 
@@ -177,4 +178,4 @@ class ClientControllerUT {
     //We cannot assert anything here
   }
 
-  }
+}

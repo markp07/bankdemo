@@ -40,14 +40,22 @@ import xyz.markpost.bankdemo.util.TransactionSortByDate;
 @Api(tags = {"Clients"})
 public class ClientController {
 
-  @Autowired
   private ClientService clientService;
 
-  @Autowired
   private AccountService accountService;
 
-  @Autowired
   private TransactionService transactionService;
+
+  @Autowired
+  public ClientController(
+      ClientService clientService,
+      AccountService accountService,
+      TransactionService transactionService
+  ) {
+    this.clientService = clientService;
+    this.accountService = accountService;
+    this.transactionService = transactionService;
+  }
 
   /**
    * REST API call for creating an client TODO: add ClientRequestDTO validation (custom annotation?)

@@ -8,51 +8,43 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
  * Transaction entity TODO: add not null TODO: add validation
  */
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Transaction {
 
-  @Getter
-  @Setter
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "id")
   private long id;
 
-  @Getter
-  @Setter
   @ManyToOne
   @JoinColumn(name = "account_id")
   private Account account;
 
-  @Getter
-  @Setter
   @ManyToOne
   @JoinColumn(name = "contra_account_id")
   private Account contraAccount;
 
-  @Getter
-  @Setter
   @Column(name = "type")
   private TransactionType type;
 
-  @Getter
-  @Setter
   @Column(name = "date")
   private Date date;
 
-  @Getter
-  @Setter
   @Column(name = "amount")
   private float amount;
 
-  @Getter
-  @Setter
   @Column(name = "description")
   private String description;
 

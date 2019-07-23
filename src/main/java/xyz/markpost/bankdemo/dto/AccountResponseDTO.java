@@ -1,23 +1,24 @@
 package xyz.markpost.bankdemo.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import xyz.markpost.bankdemo.model.Client;
 
 /**
  * AccountResponseDTO
  */
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class AccountResponseDTO extends AccountRequestDTO {
 
-  @Getter
-  @Setter
   private long id;
 
-  @Getter
   private String name;
 
-  @Getter
-  @Setter
   private String number;
 
   public void setName(Client client) {

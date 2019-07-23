@@ -1,7 +1,6 @@
 package xyz.markpost.bankdemo.config;
 
 import java.util.ArrayList;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -20,7 +19,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableSwagger2
 @PropertySource("classpath:swagger.properties")
-//@ConditionalOnResource(resources = {"classpath:swagger.properties"})
 @Profile("!pr")
 public class SwaggerConfig {
 
