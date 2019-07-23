@@ -12,6 +12,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 /**
  * Transaction entity TODO: add not null TODO: add validation
@@ -24,7 +26,16 @@ import lombok.Setter;
 public class Transaction {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "transaction-sequence-generator")
+  @GenericGenerator(
+      name = "transaction-sequence-generator",
+      strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+      parameters = {
+          @Parameter(name = "sequence_name", value = "transaction_sequence"),
+          @Parameter(name = "initial_value", value = "5"),
+          @Parameter(name = "increment_size", value = "1")
+      }
+  )
   @Column(name = "id")
   private long id;
 

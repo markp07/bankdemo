@@ -36,9 +36,9 @@ import xyz.markpost.bankdemo.util.TransactionSortByDate;
 @Api(tags = {"Accounts"})
 public class AccountController {
 
-  private AccountService accountService;
+  private final AccountService accountService;
 
-  private TransactionService transactionService;
+  private final TransactionService transactionService;
 
   @Autowired
   public AccountController(

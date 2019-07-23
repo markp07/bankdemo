@@ -32,7 +32,7 @@ import xyz.markpost.bankdemo.util.TransactionSortByDate;
 @Api(tags = {"Transactions"})
 public class TransactionController {
 
-  private TransactionService transactionService;
+  private final TransactionService transactionService;
 
   @Autowired
   public TransactionController(

@@ -40,11 +40,11 @@ import xyz.markpost.bankdemo.util.TransactionSortByDate;
 @Api(tags = {"Clients"})
 public class ClientController {
 
-  private ClientService clientService;
+  private final ClientService clientService;
 
-  private AccountService accountService;
+  private final AccountService accountService;
 
-  private TransactionService transactionService;
+  private final TransactionService transactionService;
 
   @Autowired
   public ClientController(
