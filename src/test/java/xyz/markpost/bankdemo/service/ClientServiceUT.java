@@ -8,7 +8,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import java.sql.Date;
-import javax.validation.ValidationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -17,8 +16,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import xyz.markpost.bankdemo.model.Client;
-import xyz.markpost.bankdemo.model.ClientRequestDTO;
-import xyz.markpost.bankdemo.model.ClientResponseDTO;
+import xyz.markpost.bankdemo.dto.ClientRequestDTO;
+import xyz.markpost.bankdemo.dto.ClientResponseDTO;
 import xyz.markpost.bankdemo.repository.ClientRepository;
 
 

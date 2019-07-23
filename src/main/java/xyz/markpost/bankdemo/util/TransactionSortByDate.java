@@ -1,7 +1,7 @@
 package xyz.markpost.bankdemo.util;
 
 import java.util.Comparator;
-import xyz.markpost.bankdemo.model.TransactionResponseDTO;
+import xyz.markpost.bankdemo.dto.TransactionResponseDTO;
 
 /**
  * Comparator class to sort transactions by date

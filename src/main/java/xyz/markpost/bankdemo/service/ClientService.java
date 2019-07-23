@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import xyz.markpost.bankdemo.model.Client;
-import xyz.markpost.bankdemo.model.ClientRequestDTO;
-import xyz.markpost.bankdemo.model.ClientResponseDTO;
+import xyz.markpost.bankdemo.dto.ClientRequestDTO;
+import xyz.markpost.bankdemo.dto.ClientResponseDTO;
 import xyz.markpost.bankdemo.repository.ClientRepository;
 
 

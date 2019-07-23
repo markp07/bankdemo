@@ -1,7 +1,9 @@
-package xyz.markpost.bankdemo.model;
+package xyz.markpost.bankdemo.dto;
 
 import lombok.Getter;
 import lombok.Setter;
+import xyz.markpost.bankdemo.model.Account;
+import xyz.markpost.bankdemo.model.Client;
 
 /**
  * The DTO for transaction data. We don't want to send all data of the entity back to the requester

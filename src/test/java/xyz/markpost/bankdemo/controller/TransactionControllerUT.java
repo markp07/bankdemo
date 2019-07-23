@@ -8,16 +8,14 @@ import static org.mockito.Mockito.when;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import xyz.markpost.bankdemo.model.TransactionRequestDTO;
-import xyz.markpost.bankdemo.model.TransactionResponseDTO;
+import xyz.markpost.bankdemo.dto.TransactionRequestDTO;
+import xyz.markpost.bankdemo.dto.TransactionResponseDTO;
 import xyz.markpost.bankdemo.service.TransactionService;
 import xyz.markpost.bankdemo.util.TransactionSortByDate;
 

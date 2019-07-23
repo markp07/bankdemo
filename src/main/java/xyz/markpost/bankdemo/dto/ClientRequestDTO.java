@@ -1,4 +1,4 @@
-package xyz.markpost.bankdemo.model;
+package xyz.markpost.bankdemo.dto;
 
 import java.sql.Date;
 import lombok.Getter;

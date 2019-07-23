@@ -1,4 +1,4 @@
-package xyz.markpost.bankdemo.model;
+package xyz.markpost.bankdemo.dto;
 
 import lombok.Getter;
 import lombok.Setter;

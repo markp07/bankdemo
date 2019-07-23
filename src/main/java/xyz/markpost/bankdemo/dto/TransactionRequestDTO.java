@@ -1,8 +1,9 @@
-package xyz.markpost.bankdemo.model;
+package xyz.markpost.bankdemo.dto;
 
 import java.sql.Date;
 import lombok.Getter;
 import lombok.Setter;
+import xyz.markpost.bankdemo.model.TransactionType;
 
 /**
  * TransactionRequestDTO

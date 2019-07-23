@@ -9,11 +9,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import xyz.markpost.bankdemo.model.Account;
 import xyz.markpost.bankdemo.model.Transaction;
-import xyz.markpost.bankdemo.model.TransactionRequestDTO;
-import xyz.markpost.bankdemo.model.TransactionResponseDTO;
+import xyz.markpost.bankdemo.dto.TransactionRequestDTO;
+import xyz.markpost.bankdemo.dto.TransactionResponseDTO;
 import xyz.markpost.bankdemo.model.TransactionType;
 import xyz.markpost.bankdemo.repository.AccountRepository;
 import xyz.markpost.bankdemo.repository.TransactionRepository;
+import xyz.markpost.bankdemo.util.TransactionSortByDate;
 
 
 @Service
@@ -26,8 +27,11 @@ public class TransactionService {
   @Autowired
   private AccountRepository accountRepository;
 
+
   /**
    * TODO: check requestDTO
+   * @param transactionRequestDTO
+   * @return
    */
   public TransactionResponseDTO create(TransactionRequestDTO transactionRequestDTO) {
     Transaction transaction = new Transaction();
@@ -107,11 +111,12 @@ public class TransactionService {
 
       ArrayList<TransactionResponseDTO> transactionResponseDTOS = new ArrayList<>();
 
-      //TODO: use stream and sort by date
       transactions.forEach(transaction -> {
         TransactionResponseDTO transactionResponseDTO = createResponseTransaction(transaction);
         transactionResponseDTOS.add(transactionResponseDTO);
       });
+
+      transactionResponseDTOS.sort(new TransactionSortByDate());
 
       return transactionResponseDTOS;
     } else {
@@ -132,6 +137,8 @@ public class TransactionService {
       TransactionResponseDTO transactionResponseDTO = createResponseTransaction(transaction);
       transactionResponseDTOS.add(transactionResponseDTO);
     });
+
+    transactionResponseDTOS.sort(new TransactionSortByDate());
 
     return transactionResponseDTOS;
   }
