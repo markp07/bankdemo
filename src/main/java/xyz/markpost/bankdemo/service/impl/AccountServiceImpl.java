@@ -1,4 +1,4 @@
-package xyz.markpost.bankdemo.service;
+package xyz.markpost.bankdemo.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +15,7 @@ import xyz.markpost.bankdemo.model.AccountType;
 import xyz.markpost.bankdemo.model.Client;
 import xyz.markpost.bankdemo.repository.AccountRepository;
 import xyz.markpost.bankdemo.repository.ClientRepository;
+import xyz.markpost.bankdemo.service.AccountService;
 
 /**
  *

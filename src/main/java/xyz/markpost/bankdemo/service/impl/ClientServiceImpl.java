@@ -1,4 +1,4 @@
-package xyz.markpost.bankdemo.service;
+package xyz.markpost.bankdemo.service.impl;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -12,6 +12,7 @@ import xyz.markpost.bankdemo.dto.ClientRequestDTO;
 import xyz.markpost.bankdemo.dto.ClientResponseDTO;
 import xyz.markpost.bankdemo.model.Client;
 import xyz.markpost.bankdemo.repository.ClientRepository;
+import xyz.markpost.bankdemo.service.ClientService;
 
 /**
  *

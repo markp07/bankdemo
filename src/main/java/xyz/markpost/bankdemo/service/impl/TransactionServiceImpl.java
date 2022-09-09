@@ -1,4 +1,4 @@
-package xyz.markpost.bankdemo.service;
+package xyz.markpost.bankdemo.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +14,7 @@ import xyz.markpost.bankdemo.model.Transaction;
 import xyz.markpost.bankdemo.model.TransactionType;
 import xyz.markpost.bankdemo.repository.AccountRepository;
 import xyz.markpost.bankdemo.repository.TransactionRepository;
+import xyz.markpost.bankdemo.service.TransactionService;
 import xyz.markpost.bankdemo.util.TransactionSortByDate;
 
 /**

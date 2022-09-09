@@ -17,6 +17,7 @@ import xyz.markpost.bankdemo.dto.ClientRequestDTO;
 import xyz.markpost.bankdemo.dto.ClientResponseDTO;
 import xyz.markpost.bankdemo.model.Client;
 import xyz.markpost.bankdemo.repository.ClientRepository;
+import xyz.markpost.bankdemo.service.impl.ClientServiceImpl;
 
 
 @ExtendWith(SpringExtension.class)
@@ -26,7 +27,7 @@ class ClientServiceUT {
   ClientRepository clientRepository;
 
   @InjectMocks
-  ClientService clientService;
+  ClientServiceImpl clientService;
 
   private ClientRequestDTO clientRequestDTO = new ClientRequestDTO();
   private Client client = new Client();
