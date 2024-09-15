@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.2.0] - 2024-10-05
+### Changed
+- Upgrade to Java 17
+- Update `Dockerfile` to use `openjdk:17-jdk-alpine`
+- Update `pom.xml` to set `maven.compiler.source` and `maven.compiler.target` to `17`
+
 ## [1.1.1] - 2024-09-15
 ### Added
 - Added CHANGELOG.md file
