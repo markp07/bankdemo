@@ -117,7 +117,7 @@ public class ClientController {
   /**
    * Update given client
    *
-   * @param clientId The id of the client to update
+   * @param clientId         The id of the client to update
    * @param clientRequestDTO The data of the to update fields
    * @return The updated client
    */

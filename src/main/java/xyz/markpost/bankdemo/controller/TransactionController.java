@@ -41,7 +41,8 @@ public class TransactionController {
   @PostMapping(produces = "application/json")
   @ResponseStatus(HttpStatus.CREATED)
   @Operation(summary = "Create a new transaction", description = "Creates a new transaction with the provided details")
-  public TransactionResponseDTO createTransaction(@RequestBody TransactionRequestDTO transactionRequestDTO) {
+  public TransactionResponseDTO createTransaction(
+      @RequestBody TransactionRequestDTO transactionRequestDTO) {
     return transactionService.create(transactionRequestDTO);
   }
 
@@ -53,7 +54,8 @@ public class TransactionController {
    */
   @GetMapping(path = "{transactionId}", produces = "application/json")
   @Operation(summary = "Retrieve transaction(s)", description = "Retrieves a specific transaction by ID or all transactions if no ID is provided")
-  public List<TransactionResponseDTO> retrieveTransaction(@PathVariable(value = "transactionId", required = false) Long transactionId) {
+  public List<TransactionResponseDTO> retrieveTransaction(
+      @PathVariable(value = "transactionId", required = false) Long transactionId) {
     List<TransactionResponseDTO> transactionResponseDTOS;
     if (null != transactionId) {
       transactionResponseDTOS = transactionService.findById(transactionId);
@@ -74,8 +76,10 @@ public class TransactionController {
    */
   @GetMapping(path = "batch", produces = "application/json")
   @Operation(summary = "Retrieve a set of transactions", description = "Retrieves a set of transactions by their IDs")
-  public List<TransactionResponseDTO> retrieveTransactionsByIds(@RequestBody List<Long> transactionIds) {
-    List<TransactionResponseDTO> transactionResponseDTOS = transactionService.findByIds(transactionIds);
+  public List<TransactionResponseDTO> retrieveTransactionsByIds(
+      @RequestBody List<Long> transactionIds) {
+    List<TransactionResponseDTO> transactionResponseDTOS = transactionService.findByIds(
+        transactionIds);
     transactionResponseDTOS.sort(new TransactionSortByDate());
     return transactionResponseDTOS;
   }

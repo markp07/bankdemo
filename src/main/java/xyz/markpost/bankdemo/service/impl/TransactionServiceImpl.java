@@ -1,9 +1,9 @@
 package xyz.markpost.bankdemo.service.impl;
 
+import jakarta.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +30,7 @@ public class TransactionServiceImpl implements TransactionService {
   /**
    * Constructor for TransactionServiceImpl.
    *
-   * @param accountRepository the account repository
+   * @param accountRepository     the account repository
    * @param transactionRepository the transaction repository
    */
   @Autowired
@@ -74,9 +74,11 @@ public class TransactionServiceImpl implements TransactionService {
 
       return createResponseTransaction(transaction);
     } else if (account == null) {
-      throw new EntityNotFoundException("Account with id " + transactionRequestDTO.getAccountId() + " not found.");
+      throw new EntityNotFoundException(
+          "Account with id " + transactionRequestDTO.getAccountId() + " not found.");
     } else {
-      throw new EntityNotFoundException("Account with id " + transactionRequestDTO.getContraAccountId() + " not found.");
+      throw new EntityNotFoundException(
+          "Account with id " + transactionRequestDTO.getContraAccountId() + " not found.");
     }
   }
 
@@ -114,7 +116,8 @@ public class TransactionServiceImpl implements TransactionService {
       transactions.addAll(account.getContraTransactions());
 
       List<TransactionResponseDTO> transactionResponseDTOS = new ArrayList<>();
-      transactions.forEach(transaction -> transactionResponseDTOS.add(createResponseTransaction(transaction)));
+      transactions.forEach(
+          transaction -> transactionResponseDTOS.add(createResponseTransaction(transaction)));
       transactionResponseDTOS.sort(new TransactionSortByDate());
 
       return transactionResponseDTOS;
@@ -133,7 +136,8 @@ public class TransactionServiceImpl implements TransactionService {
     Iterable<Transaction> transactions = transactionRepository.findAll();
     List<TransactionResponseDTO> transactionResponseDTOS = new ArrayList<>();
 
-    transactions.forEach(transaction -> transactionResponseDTOS.add(createResponseTransaction(transaction)));
+    transactions.forEach(
+        transaction -> transactionResponseDTOS.add(createResponseTransaction(transaction)));
     transactionResponseDTOS.sort(new TransactionSortByDate());
 
     return transactionResponseDTOS;
@@ -152,7 +156,8 @@ public class TransactionServiceImpl implements TransactionService {
     transactionsIterable.forEach(transactions::add);
     List<TransactionResponseDTO> transactionResponseDTOS = new ArrayList<>();
 
-    transactions.forEach(transaction -> transactionResponseDTOS.add(createResponseTransaction(transaction)));
+    transactions.forEach(
+        transaction -> transactionResponseDTOS.add(createResponseTransaction(transaction)));
     transactionResponseDTOS.sort(new TransactionSortByDate());
 
     return transactionResponseDTOS;
