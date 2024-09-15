@@ -35,7 +35,7 @@ import xyz.markpost.bankdemo.repository.TransactionRepository;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT, classes = BankDemoApplication.class)
-class TransactionsRA {
+class TransactionsIT {
 
   private final String CONTEXT_PATH = "/api/v1/transactions";
 

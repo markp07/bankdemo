@@ -37,9 +37,9 @@ import xyz.markpost.bankdemo.repository.TransactionRepository;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT, classes = BankDemoApplication.class)
-class ClientsRA {
+class AccountsIT {
 
-  private final String CONTEXT_PATH = "/api/v1/clients";
+  private final String CONTEXT_PATH = "/api/v1/accounts";
 
   @LocalServerPort
   private int port;
@@ -65,22 +65,19 @@ class ClientsRA {
     client = new Client();
     client.setFirstName("Foo");
     client.setLastName("Bar");
-    client.setBirthDate(new Date(0));
-    client.setAddress("Test Address 1");
+    client = clientRepository.save(client);
   }
 
   @Test
-  void createClientSuccessTest() {
-    Map<String, Object> clientData = new HashMap<>();
-    clientData.put("firstName", this.client.getFirstName());
-    clientData.put("lastName", this.client.getLastName());
-    clientData.put("birthDate", this.client.getBirthDate());
-    clientData.put("address", this.client.getAddress());
+  void createAccountSuccessTest() {
+    Map<String, Object> account = new HashMap<>();
+    account.put("clientId", client.getId());
+    account.put("type", AccountType.CHECKING.toString());
 
     Response response = RestAssured.given()
         .contentType("application/json")
         .accept("application/json")
-        .body(clientData)
+        .body(account)
         .when()
         .post(CONTEXT_PATH)
         .then()
@@ -91,24 +88,23 @@ class ClientsRA {
 
     JsonPath jsonPath = response.jsonPath();
     String resultId = jsonPath.getString("id");
-    String firstName = jsonPath.getString("firstName");
-    String lastName = jsonPath.getString("lastName");
-    String birthDate = jsonPath.getString("birthDate");
-    String address = jsonPath.getString("address");
+    String name = jsonPath.getString("name");
+    String number = jsonPath.getString("number");
+    String clientId = jsonPath.getString("clientId");
+    String type = jsonPath.getString("type");
 
     assertAll(
-        "Check return json after creating client.",
+        "Check return json after creating account.",
         () -> assertNotNull(resultId),
-        () -> assertEquals(client.getFirstName(), firstName),
-        () -> assertEquals(client.getLastName(), lastName),
-        () -> assertEquals(client.getBirthDate().toString(), birthDate),
-        () -> assertEquals(client.getAddress(), address),
-        () -> assertNotNull(lastName)
+        () -> assertNotNull(name),
+        () -> assertNotNull(number),
+        () -> assertEquals(Long.toString(client.getId()), clientId),
+        () -> assertEquals(AccountType.CHECKING.toString(), type)
     );
   }
 
   @Test
-  void createClientNoBodyTest() {
+  void createAccountNoBodyTest() {
     Response response = RestAssured.given()
         .contentType("application/json")
         .when()
@@ -122,17 +118,17 @@ class ClientsRA {
     JsonPath jsonPath = response.jsonPath();
     String message = jsonPath.getString("message");
 
-    assertEquals("Client details missing in request.", message);
+    assertEquals("Account details missing in request.", message);
   }
 
   @Test
-  void createClientEmptyBodyTest() {
-    Map<String, Object> clientData = new HashMap<>();
+  void createAccountEmptyBodyTest() {
+    Map<String, Object> account = new HashMap<>();
 
     Response response = RestAssured.given()
         .contentType("application/json")
         .accept("application/json")
-        .body(clientData)
+        .body(account)
         .when()
         .post(CONTEXT_PATH)
         .then()
@@ -144,20 +140,18 @@ class ClientsRA {
     JsonPath jsonPath = response.jsonPath();
     String message = jsonPath.getString("message");
 
-    assertEquals("Client details missing in request.", message);
+    assertEquals("Account details missing in request.", message);
   }
 
   @Test
-  void createClientNoFirstNameTest() {
-    Map<String, Object> clientData = new HashMap<>();
-    clientData.put("lastName", this.client.getLastName());
-    clientData.put("birthDate", this.client.getBirthDate());
-    clientData.put("address", this.client.getAddress());
+  void createAccountNoClientIdTest() {
+    Map<String, Object> account = new HashMap<>();
+    account.put("type", AccountType.CHECKING.toString());
 
     Response response = RestAssured.given()
         .contentType("application/json")
         .accept("application/json")
-        .body(clientData)
+        .body(account)
         .when()
         .post(CONTEXT_PATH)
         .then()
@@ -169,20 +163,18 @@ class ClientsRA {
     JsonPath jsonPath = response.jsonPath();
     String message = jsonPath.getString("message");
 
-    assertEquals("Client details missing in request.", message);
+    assertEquals("Account details missing in request.", message);
   }
 
   @Test
-  void createClientNoLastNameTest() {
-    Map<String, Object> clientData = new HashMap<>();
-    clientData.put("firstName", this.client.getFirstName());
-    clientData.put("birthDate", this.client.getBirthDate());
-    clientData.put("address", this.client.getAddress());
+  void createAccountNoTypeTest() {
+    Map<String, Object> account = new HashMap<>();
+    account.put("clientId", client.getId());
 
     Response response = RestAssured.given()
         .contentType("application/json")
         .accept("application/json")
-        .body(clientData)
+        .body(account)
         .when()
         .post(CONTEXT_PATH)
         .then()
@@ -194,66 +186,21 @@ class ClientsRA {
     JsonPath jsonPath = response.jsonPath();
     String message = jsonPath.getString("message");
 
-    assertEquals("Client details missing in request.", message);
+    assertEquals("Account type missing in request.", message);
   }
 
   @Test
-  void createClientNoBirthDateTest() {
-    Map<String, Object> clientData = new HashMap<>();
-    clientData.put("firstName", this.client.getFirstName());
-    clientData.put("lastName", this.client.getLastName());
-    clientData.put("address", this.client.getAddress());
-
-    Response response = RestAssured.given()
-        .contentType("application/json")
-        .accept("application/json")
-        .body(clientData)
-        .when()
-        .post(CONTEXT_PATH)
-        .then()
-        .statusCode(HttpStatus.BAD_REQUEST.value())
-        .contentType("application/json")
-        .extract()
-        .response();
-
-    JsonPath jsonPath = response.jsonPath();
-    String message = jsonPath.getString("message");
-
-    assertEquals("Client details missing in request.", message);
-  }
-
-  @Test
-  void createClientNoAddressTest() {
-    Map<String, Object> clientData = new HashMap<>();
-    clientData.put("firstName", this.client.getFirstName());
-    clientData.put("lastName", this.client.getLastName());
-    clientData.put("birthDate", this.client.getBirthDate());
-
-    Response response = RestAssured.given()
-        .contentType("application/json")
-        .accept("application/json")
-        .body(clientData)
-        .when()
-        .post(CONTEXT_PATH)
-        .then()
-        .statusCode(HttpStatus.BAD_REQUEST.value())
-        .contentType("application/json")
-        .extract()
-        .response();
-
-    JsonPath jsonPath = response.jsonPath();
-    String message = jsonPath.getString("message");
-
-    assertEquals("Client details missing in request.", message);
-  }
-
-  @Test
-  void retrieveClient() {
-    Client clientLocal = clientRepository.save(client);
+  void retrieveAccount() {
+    Account account = new Account();
+    account.setClient(client);
+    account.setBalance(0);
+    account.setType(AccountType.CHECKING);
+    account.setNumber("TEST123456");
+    account = accountRepository.save(account);
 
     Response response = RestAssured.given()
         .when()
-        .get(CONTEXT_PATH + "/" + clientLocal.getId())
+        .get(CONTEXT_PATH + "/" + Long.toString(account.getId()))
         .then()
         .statusCode(HttpStatus.OK.value())
         .contentType("application/json")
@@ -262,41 +209,26 @@ class ClientsRA {
 
     JsonPath jsonPath = response.jsonPath();
     List<Object> resultAccounts = jsonPath.getList("");
-    Map<String, Object> resultClient = (Map<String, Object>) resultAccounts.get(0);
-    int resultId = (int) resultClient.get("id");
-    String firstName = (String) resultClient.get("firstName");
-    String lastName = (String) resultClient.get("lastName");
-    String birthDate = (String) resultClient.get("birthDate");
-    String address = (String) resultClient.get("address");
+    Map<String, Object> resultAccount = (Map<String, Object>) resultAccounts.get(0);
+    int resultId = (int) resultAccount.get("id");
+    String name = (String) resultAccount.get("name");
+    String number = (String) resultAccount.get("number");
+    int clientId = (int) resultAccount.get("clientId");
+    String type = (String) resultAccount.get("type");
 
+    Account finalAccount = account;
     assertAll(
-        "Check return json after creating client.",
+        "Check return json after creating account.",
         () -> assertThat(resultId).isGreaterThan(0),
-        () -> assertEquals(client.getFirstName(), firstName),
-        () -> assertEquals(client.getLastName(), lastName),
-        () -> assertEquals(client.getBirthDate().toString(), birthDate),
-        () -> assertEquals(client.getAddress(), address)
+        () -> assertEquals(client.getFullName(), name),
+        () -> assertEquals(finalAccount.getNumber(), number),
+        () -> assertEquals(Long.toString(client.getId()), Integer.toString(clientId)),
+        () -> assertEquals(finalAccount.getType().toString(), type)
     );
   }
 
   @Test
-  void retrieveNonExistingClient() {
-    Response response = RestAssured.given()
-        .when()
-        .get(CONTEXT_PATH + "/1")
-        .then()
-        .statusCode(HttpStatus.OK.value())
-        .contentType("application/json")
-        .extract()
-        .response();
-
-    JsonPath jsonPath = response.jsonPath();
-    List<Object> resultClients = jsonPath.getList("");
-    assertTrue(resultClients.isEmpty());
-  }
-
-  @Test
-  void retrieveClientNoId() {
+  void retrieveAccountNoId() {
     RestAssured.given()
         .when()
         .get(CONTEXT_PATH + "/")
@@ -308,19 +240,10 @@ class ClientsRA {
   }
 
   @Test
-  void retrieveAccountsOfClient() throws ParseException {
-    Client localClient = clientRepository.save(client);
-
-    Account account = new Account();
-    account.setClient(localClient);
-    account.setBalance(0);
-    account.setType(AccountType.CHECKING);
-    account.setNumber("TEST123456");
-    account = accountRepository.save(account);
-
+  void retrieveNonExistingAccount() {
     Response response = RestAssured.given()
         .when()
-        .get(CONTEXT_PATH + "/" + localClient.getId() + "/accounts")
+        .get(CONTEXT_PATH + "/1")
         .then()
         .statusCode(HttpStatus.OK.value())
         .contentType("application/json")
@@ -329,85 +252,24 @@ class ClientsRA {
 
     JsonPath jsonPath = response.jsonPath();
     List<Object> resultAccounts = jsonPath.getList("");
-    assertEquals(1, resultAccounts.size());
-
-    Map<String, Object> resultAccount = (Map<String, Object>) resultAccounts.get(0);
-
-    int resultId = (int) resultAccount.get("id");
-    int clientId = (int) resultAccount.get("clientId");
-    String accountName = (String) resultAccount.get("name");
-    String type = (String) resultAccount.get("type");
-    String number = (String) resultAccount.get("number");
-
-    Account finalAccount = account;
-    assertAll(
-        "Check return json after creating account.",
-        () -> assertThat(resultId).isGreaterThan(0),
-        () -> assertEquals(localClient.getId(), clientId),
-        () -> assertEquals(finalAccount.getClient().getFullName(), accountName),
-        () -> assertEquals(finalAccount.getType().toString(), type),
-        () -> assertEquals(finalAccount.getNumber(), number)
-    );
+    assertTrue(resultAccounts.isEmpty());
   }
 
   @Test
-  void retrieveEmptyAccountsOfClient() {
-    Client localClient = clientRepository.save(client);
-
-    Response response = RestAssured.given()
-        .when()
-        .get(CONTEXT_PATH + "/" + localClient.getId() + "/transactions")
-        .then()
-        .statusCode(HttpStatus.OK.value())
-        .contentType("application/json")
-        .extract()
-        .response();
-
-    JsonPath jsonPath = response.jsonPath();
-    List<Object> resultAccounts = jsonPath.getList("");
-    assertThat(resultAccounts).isEmpty();
-  }
-
-  @Test
-  void retrieveAccountsOfNonExistingClient() {
-    Response response = RestAssured.given()
-        .when()
-        .get(CONTEXT_PATH + "/1/transactions")
-        .then()
-        .statusCode(HttpStatus.NOT_FOUND.value())
-        .contentType("application/json")
-        .extract()
-        .response();
-
-    JsonPath jsonPath = response.jsonPath();
-    String message = jsonPath.getString("message");
-
-    assertEquals("Client with id 1 not found.", message);
-  }
-
-
-  @Test
-  void retrieveTransactionsOfClient() throws ParseException {
-    Client localClient = clientRepository.save(client);
-
+  void retrieveTransactionsOfAccount() throws ParseException {
     Account account = new Account();
-    account.setClient(localClient);
+    account.setClient(client);
     account.setBalance(0);
     account.setType(AccountType.CHECKING);
     account.setNumber("TEST123456");
     account = accountRepository.save(account);
 
-    Client clientOther = new Client();
-    clientOther.setFirstName("Bar");
-    clientOther.setLastName("Foo");
-    clientOther = clientRepository.save(clientOther);
-
-    Account contraAccount = new Account();
-    contraAccount.setClient(clientOther);
-    contraAccount.setBalance(0);
-    contraAccount.setType(AccountType.CHECKING);
-    contraAccount.setNumber("TEST123457");
-    contraAccount = accountRepository.save(contraAccount);
+    Account account2 = new Account();
+    account2.setClient(client);
+    account2.setBalance(0);
+    account2.setType(AccountType.CHECKING);
+    account2.setNumber("TEST123457");
+    account2 = accountRepository.save(account2);
 
     String dateString = "2019-01-01";
     java.util.Date utilDate = new SimpleDateFormat("yyyy-MM-dd").parse(dateString);
@@ -415,7 +277,7 @@ class ClientsRA {
 
     Transaction transaction = new Transaction();
     transaction.setAccount(account);
-    transaction.setContraAccount(contraAccount);
+    transaction.setContraAccount(account2);
     transaction.setType(TransactionType.DEPOSIT);
     transaction.setDate(date);
     transaction.setAmount(1.0f);
@@ -424,7 +286,7 @@ class ClientsRA {
 
     Response response = RestAssured.given()
         .when()
-        .get(CONTEXT_PATH + "/" + localClient.getId() + "/transactions")
+        .get(CONTEXT_PATH + "/" + account.getId() + "/transactions")
         .then()
         .statusCode(HttpStatus.OK.value())
         .contentType("application/json")
@@ -449,14 +311,14 @@ class ClientsRA {
 
     Account finalAccount = account;
     Transaction finalTransaction = transaction;
-    Account finalContraAccount = contraAccount;
+    Account finalAccount1 = account2;
     assertAll(
-        "Check return json after retrieving transactions of client.",
+        "Check return json after creating account.",
         () -> assertThat(resultId).isGreaterThan(0),
         () -> assertEquals(finalAccount.getId(), accountId),
         () -> assertEquals(finalAccount.getClient().getFullName(), accountName),
-        () -> assertEquals(finalContraAccount.getId(), contraAccountId),
-        () -> assertEquals(finalContraAccount.getClient().getFullName(), contraAccountName),
+        () -> assertEquals(finalAccount1.getId(), contraAccountId),
+        () -> assertEquals(finalAccount1.getClient().getFullName(), contraAccountName),
         () -> assertEquals(finalTransaction.getType().toString(), type),
         () -> assertEquals(dateString, resultDate),
         () -> assertEquals(1.0f, amount),
@@ -465,11 +327,9 @@ class ClientsRA {
   }
 
   @Test
-  void retrieveEmptyTransactionsOfClient() {
-    Client localClient = clientRepository.save(client);
-
+  void retrieveEmptyTransactionsOfAccount() {
     Account account = new Account();
-    account.setClient(localClient);
+    account.setClient(client);
     account.setBalance(0);
     account.setType(AccountType.CHECKING);
     account.setNumber("TEST123456");
@@ -477,7 +337,7 @@ class ClientsRA {
 
     Response response = RestAssured.given()
         .when()
-        .get(CONTEXT_PATH + "/" + localClient.getId() + "/transactions")
+        .get(CONTEXT_PATH + "/" + account.getId() + "/transactions")
         .then()
         .statusCode(HttpStatus.OK.value())
         .contentType("application/json")
@@ -490,7 +350,7 @@ class ClientsRA {
   }
 
   @Test
-  void retrieveTransactionsOfNonExistingClient() {
+  void retrieveTransactionsOfNonExistingAccount() {
     Response response = RestAssured.given()
         .when()
         .get(CONTEXT_PATH + "/1/transactions")
@@ -503,22 +363,33 @@ class ClientsRA {
     JsonPath jsonPath = response.jsonPath();
     String message = jsonPath.getString("message");
 
-    assertEquals("Client with id 1 not found.", message);
+    assertEquals("Account with id 1 not found.", message);
   }
 
   @Test
   void updateAccountSuccessTest() {
-    Client clientLocal = clientRepository.save(client);
+    Account account = new Account();
+    account.setClient(client);
+    account.setBalance(0);
+    account.setType(AccountType.CHECKING);
+    account.setNumber("TEST123456");
+    account = accountRepository.save(account);
 
-    Map<String, Object> clientUpdateData = new HashMap<>();
-    clientUpdateData.put("address", "New address 1");
+    Client clientNew = new Client();
+    clientNew.setFirstName("Foo");
+    clientNew.setLastName("Bar");
+    clientNew = clientRepository.save(client);
+
+    Map<String, Object> accountUpdate = new HashMap<>();
+    accountUpdate.put("clientId", clientNew.getId());
+    accountUpdate.put("type", AccountType.SAVING.toString());
 
     Response response = RestAssured.given()
         .contentType("application/json")
         .accept("application/json")
-        .body(clientUpdateData)
+        .body(accountUpdate)
         .when()
-        .patch(CONTEXT_PATH + "/" + clientLocal.getId())
+        .patch(CONTEXT_PATH + "/" + account.getId())
         .then()
         .statusCode(HttpStatus.OK.value())
         .contentType("application/json")
@@ -526,35 +397,40 @@ class ClientsRA {
         .response();
 
     JsonPath jsonPath = response.jsonPath();
-    long resultId = Long.parseLong(jsonPath.getString("id"));
-    String firstName = jsonPath.getString("firstName");
-    String lastName = jsonPath.getString("lastName");
-    String birthDate = jsonPath.getString("birthDate");
-    String address = jsonPath.getString("address");
+    String resultId = jsonPath.getString("id");
+    String name = jsonPath.getString("name");
+    String number = jsonPath.getString("number");
+    String clientId = jsonPath.getString("clientId");
+    String type = jsonPath.getString("type");
 
+    Client finalClientNew = clientNew;
     assertAll(
-        "Check return json after updating client.",
-        () -> assertEquals(clientLocal.getId(), resultId),
-        () -> assertEquals(clientLocal.getFirstName(), firstName),
-        () -> assertEquals(clientLocal.getLastName(), lastName),
-        () -> assertEquals(clientLocal.getBirthDate().toString(), birthDate),
-        () -> assertEquals("New address 1", address),
-        () -> assertNotNull(lastName)
+        "Check return json after creating account.",
+        () -> assertNotNull(resultId),
+        () -> assertNotNull(name),
+        () -> assertNotNull(number),
+        () -> assertEquals(Long.toString(finalClientNew.getId()), clientId),
+        () -> assertEquals(AccountType.SAVING.toString(), type)
     );
   }
 
   @Test
-  void updateClientNoUpdatedFieldsSuccessTest() {
-    Client clientLocal = clientRepository.save(client);
+  void updateAccountNoUpdatedFieldsSuccessTest() {
+    Account account = new Account();
+    account.setClient(client);
+    account.setBalance(0);
+    account.setType(AccountType.CHECKING);
+    account.setNumber("TEST123456");
+    account = accountRepository.save(account);
 
-    Map<String, Object> clientUpdateData = new HashMap<>();
+    Map<String, Object> accountUpdate = new HashMap<>();
 
     Response response = RestAssured.given()
         .contentType("application/json")
         .accept("application/json")
-        .body(clientUpdateData)
+        .body(accountUpdate)
         .when()
-        .patch(CONTEXT_PATH + "/" + clientLocal.getId())
+        .patch(CONTEXT_PATH + "/" + account.getId())
         .then()
         .statusCode(HttpStatus.OK.value())
         .contentType("application/json")
@@ -562,33 +438,63 @@ class ClientsRA {
         .response();
 
     JsonPath jsonPath = response.jsonPath();
-    long resultId = Long.parseLong(jsonPath.getString("id"));
-    String firstName = jsonPath.getString("firstName");
-    String lastName = jsonPath.getString("lastName");
-    String birthDate = jsonPath.getString("birthDate");
-    String address = jsonPath.getString("address");
+    String resultId = jsonPath.getString("id");
+    String name = jsonPath.getString("name");
+    String number = jsonPath.getString("number");
+    String clientId = jsonPath.getString("clientId");
+    String type = jsonPath.getString("type");
 
     assertAll(
-        "Check return json after updating client.",
-        () -> assertEquals(clientLocal.getId(), resultId),
-        () -> assertEquals(clientLocal.getFirstName(), firstName),
-        () -> assertEquals(clientLocal.getLastName(), lastName),
-        () -> assertEquals(clientLocal.getBirthDate().toString(), birthDate),
-        () -> assertEquals(clientLocal.getAddress(), address),
-        () -> assertNotNull(lastName)
+        "Check return json after creating account.",
+        () -> assertNotNull(resultId),
+        () -> assertNotNull(name),
+        () -> assertNotNull(number),
+        () -> assertEquals(Long.toString(client.getId()), clientId),
+        () -> assertEquals(AccountType.CHECKING.toString(), type)
     );
   }
 
   @Test
-  void updateNotExistingClient() {
-    Map<String, Object> clientUpdate = new HashMap<>();
+  void updateNotExistingAccount() {
+    Map<String, Object> accountUpdate = new HashMap<>();
 
     Response response = RestAssured.given()
         .contentType("application/json")
         .accept("application/json")
-        .body(clientUpdate)
+        .body(accountUpdate)
         .when()
         .patch(CONTEXT_PATH + "/0")
+        .then()
+        .statusCode(HttpStatus.NOT_FOUND.value())
+        .contentType("application/json")
+        .extract()
+        .response();
+
+    JsonPath jsonPath = response.jsonPath();
+    String message = jsonPath.getString("message");
+
+    assertEquals("Account with id 0 not found.", message);
+  }
+
+  @Test
+  void updateAccountNotExistingClient() {
+    Account account = new Account();
+    account.setClient(client);
+    account.setBalance(0);
+    account.setType(AccountType.CHECKING);
+    account.setNumber("TEST123456");
+    account = accountRepository.save(account);
+
+    Map<String, Object> accountUpdate = new HashMap<>();
+    accountUpdate.put("clientId", 0);
+
+    Account finalAccount = account;
+    Response response = RestAssured.given()
+        .contentType("application/json")
+        .accept("application/json")
+        .body(accountUpdate)
+        .when()
+        .patch(CONTEXT_PATH + "/" + finalAccount.getId())
         .then()
         .statusCode(HttpStatus.NOT_FOUND.value())
         .contentType("application/json")
@@ -602,19 +508,19 @@ class ClientsRA {
   }
 
   @Test
-  void deleteClient() {
-    Client client = new Client();
-    client = clientRepository.save(client);
+  void deleteAccount() {
+    Account account = new Account();
+    account = accountRepository.save(account);
 
     RestAssured.given()
         .when()
-        .delete(CONTEXT_PATH + "/" + client.getId())
+        .delete(CONTEXT_PATH + "/" + account.getId())
         .then()
         .statusCode(HttpStatus.OK.value());
   }
 
   @Test
-  void deleteNonExistingClient() {
+  void deleteNonExistingAccount() {
     Response response = RestAssured.given()
         .when()
         .patch(CONTEXT_PATH + "/0")
@@ -627,7 +533,7 @@ class ClientsRA {
     JsonPath jsonPath = response.jsonPath();
     String message = jsonPath.getString("message");
 
-    assertEquals("Client with id 0 not found.", message);
+    assertEquals("Account with id 0 not found.", message);
   }
 
   private void cleanDatabase() {

@@ -1,5 +1,6 @@
 package xyz.markpost.bankdemo.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +21,8 @@ import xyz.markpost.bankdemo.service.AccountService;
 import xyz.markpost.bankdemo.service.TransactionService;
 import xyz.markpost.bankdemo.util.TransactionSortByDate;
 
-
 /**
- * REST controller for account entity and its'relations
+ * REST controller for account entity and its relations
  */
 @RestController
 @RequestMapping("v1/accounts")
@@ -30,39 +30,35 @@ import xyz.markpost.bankdemo.util.TransactionSortByDate;
 public class AccountController {
 
   private final AccountService accountService;
-
   private final TransactionService transactionService;
 
   @Autowired
-  public AccountController(
-      AccountService accountService,
-      TransactionService transactionService
-  ) {
+  public AccountController(AccountService accountService, TransactionService transactionService) {
     this.accountService = accountService;
     this.transactionService = transactionService;
   }
 
   /**
-   * REST API call for creating an account TODO: add AccountRequestDTO validation (custom
-   * annotation?) TODO: swagger annotation
+   * REST API call for creating an account
    *
    * @param accountRequestDTO DTO containing data for new account entity
    * @return The response DTO of the created account entity
    */
   @PostMapping(produces = "application/json")
   @ResponseStatus(HttpStatus.CREATED)
+  @Operation(summary = "Create a new account", description = "Creates a new account with the provided details")
   public AccountResponseDTO createAccount(@RequestBody AccountRequestDTO accountRequestDTO) {
     return accountService.create(accountRequestDTO);
   }
 
   /**
-   * REST API call for retrieving certain account or all accounts TODO: add option for finding set
-   * of accounts (input list of id's) TODO: swagger annotation
+   * REST API call for retrieving certain account or all accounts
    *
    * @param accountId Account to retrieve (not required)
    * @return List of found accounts
    */
   @GetMapping(path = "{accountId}", produces = "application/json")
+  @Operation(summary = "Retrieve account(s)", description = "Retrieves a specific account by ID or all accounts if no ID is provided")
   public List<AccountResponseDTO> retrieveAccount(
       @PathVariable(value = "accountId", required = false) Long accountId) {
     if (null != accountId) {
@@ -73,46 +69,45 @@ public class AccountController {
   }
 
   /**
-   * Get all transactions of given account TODO: swagger annotation
+   * Get all transactions of given account
    *
    * @param accountId The id of the account to get the transactions of
    * @return The list of transactions of the account
    */
   @GetMapping(path = "{accountId}/transactions", produces = "application/json")
+  @Operation(summary = "Retrieve account transactions", description = "Retrieves all transactions for a specific account by ID")
   public List<TransactionResponseDTO> retrieveAccountTransactions(
       @PathVariable(value = "accountId") Long accountId) {
-    List<TransactionResponseDTO> transactionResponseDTOS = transactionService
-        .findByAccountId(accountId);
-
+    List<TransactionResponseDTO> transactionResponseDTOS = transactionService.findByAccountId(
+        accountId);
     transactionResponseDTOS.sort(new TransactionSortByDate());
-
     return transactionResponseDTOS;
   }
 
   /**
-   * Update given account TODO: add AccountRequestDTO validation (custom annotation?) TODO: swagger
-   * annotation
+   * Update given account
    *
-   * @param accountId The id of the account to update
+   * @param accountId         The id of the account to update
    * @param accountRequestDTO The data of the to update fields
    * @return The updated account
    */
   @PatchMapping(path = "{accountId}", produces = "application/json")
   @ResponseStatus(HttpStatus.OK)
+  @Operation(summary = "Update an account", description = "Updates the details of an existing account by ID")
   public AccountResponseDTO updateAccount(@PathVariable("accountId") Long accountId,
       @RequestBody AccountRequestDTO accountRequestDTO) {
     return accountService.update(accountId, accountRequestDTO);
   }
 
   /**
-   * Delete the account with the given id TODO: swagger annotation
+   * Delete the account with the given id
    *
    * @param accountId The id of the account to delete
    */
   @DeleteMapping(path = "{accountId}", produces = "application/json")
   @ResponseStatus(HttpStatus.OK)
+  @Operation(summary = "Delete an account", description = "Deletes an existing account by ID")
   public void deleteAccount(@PathVariable("accountId") Long accountId) {
     accountService.delete(accountId);
   }
-
 }
