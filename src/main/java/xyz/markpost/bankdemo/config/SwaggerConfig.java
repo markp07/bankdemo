@@ -11,13 +11,11 @@ import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * The configuration to add Swagger to the application
  */
 @Configuration
-@EnableSwagger2
 @PropertySource("classpath:swagger.properties")
 @Profile("!pr")
 public class SwaggerConfig {
@@ -26,7 +24,7 @@ public class SwaggerConfig {
 
   @Bean
   public Docket bankDemoApi() {
-    return new Docket(DocumentationType.SWAGGER_2)
+    return new Docket(DocumentationType.OAS_30)
         .select()
         .apis(RequestHandlerSelectors.basePackage(BASE_PACKAGE))
         .paths(PathSelectors.any())

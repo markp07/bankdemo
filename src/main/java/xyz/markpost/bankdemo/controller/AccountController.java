@@ -1,8 +1,6 @@
 package xyz.markpost.bankdemo.controller;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.SwaggerDefinition;
-import io.swagger.annotations.Tag;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,18 +20,13 @@ import xyz.markpost.bankdemo.service.AccountService;
 import xyz.markpost.bankdemo.service.TransactionService;
 import xyz.markpost.bankdemo.util.TransactionSortByDate;
 
-@SwaggerDefinition(
-    tags = {
-        @Tag(name = "Accounts", description = "API request options related to account entities")
-    }
-)
 
 /**
  * REST controller for account entity and its'relations
  */
 @RestController
 @RequestMapping("v1/accounts")
-@Api(tags = {"Accounts"})
+@Tag(name = "Accounts", description = "API request options related to account entities")
 public class AccountController {
 
   private final AccountService accountService;
