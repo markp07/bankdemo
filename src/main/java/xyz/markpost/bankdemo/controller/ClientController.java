@@ -1,8 +1,6 @@
 package xyz.markpost.bankdemo.controller;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.SwaggerDefinition;
-import io.swagger.annotations.Tag;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,19 +23,12 @@ import xyz.markpost.bankdemo.service.ClientService;
 import xyz.markpost.bankdemo.service.TransactionService;
 import xyz.markpost.bankdemo.util.TransactionSortByDate;
 
-
-@SwaggerDefinition(
-    tags = {
-        @Tag(name = "Clients", description = "API request options related to client entities")
-    }
-)
-
 /**
  * REST controller for client entity and its'relations
  */
 @RestController
 @RequestMapping("v1/clients")
-@Api(tags = {"Clients"})
+@Tag(name = "Clients", description = "API request options related to client entities")
 public class ClientController {
 
   private final ClientService clientService;
