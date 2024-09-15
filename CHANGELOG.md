@@ -1,6 +1,6 @@
 # Changelog
 
-## [1.2.0] - 2024-10-05
+## [1.2.0] - 2024-9-15
 ### Changed
 - Upgrade to Java 17
 - Update `Dockerfile` to use `openjdk:17-jdk-alpine`
