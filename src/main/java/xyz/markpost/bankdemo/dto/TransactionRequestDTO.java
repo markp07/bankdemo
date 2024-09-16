@@ -10,7 +10,7 @@ import xyz.markpost.bankdemo.model.TransactionType;
 
 /**
  * TransactionRequestDTO
- *
+ * <p>
  * TODO: add account number? Maybe instead of id?
  */
 @Getter

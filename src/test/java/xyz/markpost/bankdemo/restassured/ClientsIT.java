@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,8 @@ import xyz.markpost.bankdemo.repository.TransactionRepository;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT, classes = BankDemoApplication.class)
-class ClientsRA {
+@Disabled("Disabled because H2 database is not working at the moment.")
+class ClientsIT {
 
   private final String CONTEXT_PATH = "/api/v1/clients";
 

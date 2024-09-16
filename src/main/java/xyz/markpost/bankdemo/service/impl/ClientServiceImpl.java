@@ -1,10 +1,10 @@
 package xyz.markpost.bankdemo.service.impl;
 
+import jakarta.persistence.EntityNotFoundException;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +32,7 @@ public class ClientServiceImpl implements ClientService {
 
   /**
    * TODO: check requestDTO
+   *
    * @param clientRequestDTO
    * @return
    */
@@ -50,7 +51,6 @@ public class ClientServiceImpl implements ClientService {
   }
 
   /**
-   *
    * @param id
    * @return
    */
@@ -68,7 +68,6 @@ public class ClientServiceImpl implements ClientService {
   }
 
   /**
-   *
    * @return
    */
   @Override
@@ -87,7 +86,6 @@ public class ClientServiceImpl implements ClientService {
   }
 
   /**
-   *
    * @param id
    * @param clientRequestDTO
    * @return
@@ -126,7 +124,6 @@ public class ClientServiceImpl implements ClientService {
   }
 
   /**
-   *
    * @param id
    */
   @Override
@@ -141,7 +138,6 @@ public class ClientServiceImpl implements ClientService {
   }
 
   /**
-   *
    * @param id
    * @return
    */
@@ -152,7 +148,6 @@ public class ClientServiceImpl implements ClientService {
   }
 
   /**
-   *
    * @param client
    * @return
    */

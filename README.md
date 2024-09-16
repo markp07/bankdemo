@@ -12,7 +12,7 @@ BankDemo is a Spring Boot application designed to simulate basic banking operati
 ## Prerequisites
 - Java 11 or higher
 - Maven 3.6.0 or higher
-- A SQL database (e.g., MySQL, PostgreSQL)
+- Docker and Docker Compose
 
 ## Setup
 
@@ -41,6 +41,18 @@ mvn clean install
 mvn spring-boot:run
 ```
 
+## Docker Setup
+
+### Build Docker Image
+```sh
+docker build -t bankdemo:latest .
+```
+
+### Run with Docker Compose
+```sh
+docker compose up
+```
+
 ## Usage
 Once the application is running, you can access it at `http://localhost:8080`. Use the provided endpoints to interact with the banking system.
 
@@ -52,6 +64,17 @@ Once the application is running, you can access it at `http://localhost:8080`. U
 - `DELETE /accounts/{id}` - Delete an account
 - `POST /transactions` - Process a transaction
 - `GET /transactions` - List all transactions
+
+## Shell Scripts
+### Start the application
+```sh
+./scripts/start.sh
+```
+
+### Stop the application
+```sh
+./scripts/stop.sh
+```
 
 ## Contributing
 1. Fork the repository

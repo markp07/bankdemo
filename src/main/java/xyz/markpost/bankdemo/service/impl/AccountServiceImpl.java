@@ -1,10 +1,10 @@
 package xyz.markpost.bankdemo.service.impl;
 
+import jakarta.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,6 +42,7 @@ public class AccountServiceImpl implements AccountService {
 
   /**
    * TODO: check requestDTO
+   *
    * @param accountRequestDTO
    * @return
    */
@@ -68,7 +69,6 @@ public class AccountServiceImpl implements AccountService {
   }
 
   /**
-   *
    * @param id
    * @return
    */
@@ -86,7 +86,6 @@ public class AccountServiceImpl implements AccountService {
   }
 
   /**
-   *
    * @param clientId
    * @return
    */
@@ -111,7 +110,6 @@ public class AccountServiceImpl implements AccountService {
   }
 
   /**
-   *
    * @return
    */
   @Override
@@ -128,7 +126,6 @@ public class AccountServiceImpl implements AccountService {
   }
 
   /**
-   *
    * @param id
    * @param accountRequestDTO
    * @return
@@ -163,7 +160,6 @@ public class AccountServiceImpl implements AccountService {
   }
 
   /**
-   *
    * @param id
    */
   @Override
@@ -178,7 +174,6 @@ public class AccountServiceImpl implements AccountService {
   }
 
   /**
-   *
    * @param id
    * @return
    */
@@ -189,7 +184,6 @@ public class AccountServiceImpl implements AccountService {
   }
 
   /**
-   *
    * @param id
    * @return
    */
@@ -200,7 +194,6 @@ public class AccountServiceImpl implements AccountService {
   }
 
   /**
-   *
    * @param account
    * @return
    */
@@ -218,7 +211,6 @@ public class AccountServiceImpl implements AccountService {
   }
 
   /**
-   *
    * @return
    */
   private String createAccountNumber() {

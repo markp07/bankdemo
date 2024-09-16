@@ -19,7 +19,7 @@ import xyz.markpost.bankdemo.service.TransactionService;
 import xyz.markpost.bankdemo.util.TransactionSortByDate;
 
 @ExtendWith(SpringExtension.class)
-class TransactionControllerUT {
+class TransactionControllerTest {
 
   @Mock
   private TransactionService transactionService;

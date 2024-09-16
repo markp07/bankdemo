@@ -23,7 +23,7 @@ import xyz.markpost.bankdemo.service.TransactionService;
 import xyz.markpost.bankdemo.util.TransactionSortByDate;
 
 @ExtendWith(SpringExtension.class)
-class ClientControllerUT {
+class ClientControllerTest {
 
   @Mock
   private ClientService clientService;
