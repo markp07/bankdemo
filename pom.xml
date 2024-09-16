@@ -5,7 +5,7 @@
 
   <groupId>xyz.markpost</groupId>
   <artifactId>BankDemo</artifactId>
-  <version>1.3.0-SNAPSHOT</version>
+  <version>1.3.1</version>
   <name>BankDemo</name>
   <description>Demo project for Spring Boot</description>
 

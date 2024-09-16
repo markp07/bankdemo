@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.1] - 2024-10-06
+
+### Added
+- Added new unit tests
+
+### Changed
+- Updated unit tests
+- Updated Swagger annotations
+
+### Removed
+- Disabled integration tests since H2 database is not working anymore
+
 ## [1.3.0] - 2024-10-05
 
 ### Added
