@@ -1,4 +1,4 @@
-FROM openjdk:17-jdk-alpine as build
+FROM openjdk:18-jdk-alpine as build
 WORKDIR /workspace/app
 
 COPY mvnw .
@@ -8,7 +8,7 @@ COPY src src
 
 RUN ./mvnw install -DskipTests
 
-FROM openjdk:17-jdk-alpine
+FROM openjdk:18-jdk-alpine
 
 LABEL maintainer="mark@markpost.xyz"
 VOLUME /tmp
