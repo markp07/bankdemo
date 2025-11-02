@@ -10,7 +10,7 @@ BankDemo is a Spring Boot application designed to simulate basic banking operati
 - Transaction history
 
 ## Prerequisites
-- Java 11 or higher
+- Java 17 or higher
 - Maven 3.6.0 or higher
 - Docker and Docker Compose
 

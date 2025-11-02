@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.3.2] - 2025-11-02
+
+### Changed
+- Updated `com.mysql:mysql-connector-j` from 9.0.0 to 9.5.0
+
 ## [1.3.1] - 2024-10-06
 
 ### Added
