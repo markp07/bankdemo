@@ -14,6 +14,10 @@ updates:
     commit-message:
       prefix: "chore"
       include: "scope"
+    groups:
+      maven-dependencies:
+        patterns:
+          - "*"
 
   # Enable version updates for Docker
   - package-ecosystem: "docker"
@@ -24,3 +28,7 @@ updates:
     commit-message:
       prefix: "chore"
       include: "scope"
+    groups:
+      docker-dependencies:
+        patterns:
+          - "*"
