@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.3.2] - 2025-11-02
+
+### Added
+- Added Dependabot configuration for Maven and Docker dependencies
+- Configured Dependabot to group dependency updates into single PRs
+
+### Changed
+- Updated `com.mysql:mysql-connector-j` from 9.0.0 to 9.5.0
+- Updated `org.apache.maven.plugins:maven-failsafe-plugin` from 3.5.0 to 3.5.4
+- Updated `org.apache.maven.plugins:maven-compiler-plugin` from 3.11.0 to 3.14.0
+- Updated `org.assertj:assertj-core` from 3.26.3 to 3.27.6
+- Updated `org.apache.maven.plugins:maven-surefire-plugin` from 3.3.1 to 3.5.4
+- Updated `org.springframework.boot:spring-boot-dependencies` from 3.3.2 to 3.5.7
+- Updated `rest.assured.version` from 5.5.0 to 5.5.6
+- Updated `junit.jupiter.version` from 5.10.0 to 6.0.1
+- Updated Docker base image from `openjdk:17-jdk-alpine` to `openjdk:18-jdk-alpine`
+- Updated `jakarta.persistence:jakarta.persistence-api` from 3.1.0 to 3.2.0
+
 ## [1.3.1] - 2024-10-06
 
 ### Added
